@@ -1,0 +1,5 @@
+Unity 2022.3.62f2 - 2026-09-08
+PASS: 30 flow + 29 transport checks; project references and rendered review.
+PASS: stepped desktop Start coroutine; automatic arm anchors and hologram; chest translation/yaw; connected grip callbacks; patient and flow restart; disable cleanup. XR Play Mode requires a headset.
+Source runtime compilation: PASS (Roslyn with project references).
+Physical Quest tracking and XR Play Mode: pending; headset unavailable.

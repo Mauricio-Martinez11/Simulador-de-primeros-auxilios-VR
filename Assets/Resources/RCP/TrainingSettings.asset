@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f07e5a6449b66814aa1f8a68c3f065f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftHand: {fileID: 4300000, guid: 7d251e5a2bffbea458c60493d8708b48, type: 2}
+  rightHand: {fileID: 4300000, guid: 0532373d17972b348b01302ede5e7484, type: 2}
+  stackedLeftHand: {fileID: 4300000, guid: 1080a44ed1766404a822daf0e8767eda, type: 2}
+  stackedRightHand: {fileID: 4300000, guid: ba826548ad1ae7a4ea65bd4069ed1052, type: 2}
+  gripLeftHand: {fileID: 4300000, guid: b37d3bb3a076cd040b1c449ea2a93a3f, type: 2}
+  gripRightHand: {fileID: 4300000, guid: 711b72bf2ba3a6f4f855c667f3b254af, type: 2}
+  hologramMaterial: {fileID: 2100000, guid: 8ff5f302cb3f54246a2646f9be455d31, type: 2}
+  clothedPatientBody: {fileID: 4300000, guid: c62cc9a3483289a42b04a02ff150ddf7, type: 2}
+  captureRadius: 0.085
+  releaseRadius: 0.14
+  palmAngle: 45
+  fingerAngle: 65
+  placementHold: 1.25
+  buttonDwell: 1.4
+  breathingObservation: 5
+  stackedHandHeight: 0.035
+  controllerStackExtra: 0.065
+  lowerHandOcclusionGrace: 3
+  bothHandsLostGrace: 0.8
+  separationHold: 0.12
+  handSeparation: 0.16
+  patientDestinationOffset: {x: -1.15, y: 0, z: 0.35}
+  armGrabRadius: 0.16
+  grabThreshold: 0.65
+  grabReleaseThreshold: 0.3
+  grabTrackingGrace: 0.6
+  grabOpenHold: 0.1
+  patientSnapRadius: 0.28
+  patientSnapAngle: 25
+  patientSnapDuration: 0.4
+  patientDragSpeed: 1.6
+  patientMass: 72
+  patientFriction: 0.35
+  grabSpring: 60000
+  grabDamping: 900
+  grabMaxForce: 3000
+  grabTargetSpeed: 6
+  grabMaxReach: 0.65
+  grabGuideSeconds: 2.4
+  showAnkleGrips: 1
+  chestOffset: {x: 0, y: 0.115, z: -0.08}
+  shoulderOffset: {x: 0, y: 0.081, z: 0}
+  relaxedFingerCurl: 18
+  relaxedFingerCurlDistal: 28
+  relaxedThumbCurl: 14
+  controllerPalmOffset: {x: 0, y: -0.035, z: 0.04}
+  controllerPalmEuler: {x: 0, y: 0, z: 0}
+  menuScene: 1_MainMenu

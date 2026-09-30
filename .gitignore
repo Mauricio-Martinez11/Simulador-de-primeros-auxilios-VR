@@ -1,0 +1,54 @@
+# Cachés y archivos locales generados por Unity.
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# Compilaciones: se generan localmente, no forman parte del proyecto fuente.
+/[Bb]uild/
+/[Bb]uilds/
+*.apk
+*.aab
+*.unitypackage
+
+# Configuración y soluciones generadas por los editores.
+/.vs/
+/.vscode/
+/.idea/
+/.gradle/
+*.csproj
+*.unityproj
+*.sln
+*.slnx
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+/TempAssembly.dll
+/TempAssembly.pdb
+/sysinfo.txt
+/crashlytics-build.properties
+
+# Archivos temporales y del sistema operativo.
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.tmp
+*.bak
+*.log
+
+# Credenciales locales y claves de firma de Android.
+.env
+.env.*
+!.env.example
+*.keystore
+*.jks
+*.p12
+*.pfx
+
+# Assets, sus .meta, Packages y ProjectSettings deben conservarse.

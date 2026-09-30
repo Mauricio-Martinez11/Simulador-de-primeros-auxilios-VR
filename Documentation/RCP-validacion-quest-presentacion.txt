@@ -1,0 +1,2 @@
+PASS: 33 presentation checks; 30 CPR checks; 104 ragdoll checks; drag=1.317 m; peakJointError=0.0040 m; liftError=0.0361 m; selfPenetration=0.0014 m; 68 arm pose cases; wrist=25.0 deg; elbow=0.0..115.0 deg; shoulderTwist=36.5 deg.
+Android seleccionado: compilacion de scripts y CprProjectChecks correctos; proceso finalizado con codigo 0. No se genero APK ni se realizo prueba en el visor.
