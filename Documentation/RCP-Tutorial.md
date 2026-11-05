@@ -1,5 +1,7 @@
 # Tutorial de RCP: manos enganchadas y traslado del paciente
 
+**Modo experimental anterior.** Desde el 17/10/2026, el tutorial inicia en una estación fija con compresiones y evaluación. Consulta [la guía actual](RCP-Tutorial-Animado.md). Las instrucciones y los parámetros que siguen documentan únicamente ese modo experimental anterior. El traslado, el desplome y sus hologramas permanecen desactivados mediante `stationaryPractice`.
+
 Escena: `Assets/Scenes/2_Tutorial_RCP.unity`. Entrada habitual: **Boobstrap → menú → Iniciar**. Unity 2022.3.62f2 / Meta XR SDK 201.
 
 ## Uso

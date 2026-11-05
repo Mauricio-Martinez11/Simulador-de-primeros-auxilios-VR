@@ -12,6 +12,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f07e5a6449b66814aa1f8a68c3f065f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stationaryPractice: 1
+  practiceCompressions: 30
+  minimumRate: 100
+  maximumRate: 120
+  minimumVirtualDepth: 0.05
+  maximumVirtualDepth: 0.06
+  compressionReturn: 0.008
+  compressionActivation: 0.018
+  rateWindow: 6
+  practicePauseSeconds: 2
+  compressionZoneRadius: 0.085
+  maximumStationLift: 1.2
+  practiceInstructions:
+  - {fileID: 8300000, guid: 2c67d54915024f7bae392b4763f250da, type: 3}
+  - {fileID: 8300000, guid: b082355f822a4079b900d57b515259a1, type: 3}
+  - {fileID: 8300000, guid: 83d6c9a89ab240c3845d4f18aceb7f29, type: 3}
+  - {fileID: 8300000, guid: 42ad53781f54400981e234af179727d6, type: 3}
+  - {fileID: 8300000, guid: aa02907faca4499485473796d4449059, type: 3}
+  - {fileID: 8300000, guid: c0da8f0bb8c944928b3aad47c1774af5, type: 3}
+  - {fileID: 8300000, guid: f8621005ea2a48258d7066427d41ee77, type: 3}
+  - {fileID: 8300000, guid: 7f853fedfa5f43118c99579f20e70184, type: 3}
+  practiceVideos:
+  - {fileID: 32900000, guid: 7e020c18b1804af793f0c91292cd41e3, type: 3}
+  - {fileID: 32900000, guid: 8091de85474c4c9a876a51a45664378f, type: 3}
+  - {fileID: 32900000, guid: c04bc498bce64668b05e452b8d252527, type: 3}
+  - {fileID: 32900000, guid: 5ce6b0001e984e6d864c9ec39c4869af, type: 3}
+  - {fileID: 32900000, guid: e625a09bb13e4d1daf825af454862429, type: 3}
+  - {fileID: 32900000, guid: 0862cfec6aea40ccb1fb362ac5058d6a, type: 3}
+  practiceVideoPosters:
+  - {fileID: 2800000, guid: 2c5c99057df842d6bf19bd4a2e3b5fc2, type: 3}
+  - {fileID: 2800000, guid: a14b3dedf9b746fb8a4755facbb48c47, type: 3}
+  - {fileID: 2800000, guid: 14209d69fb4943b59583337c79407fbf, type: 3}
+  - {fileID: 2800000, guid: 8b20eb41706949d189b891863b1e322e, type: 3}
+  - {fileID: 2800000, guid: 719793ca517e4f7fb250968b26d25ae7, type: 3}
+  - {fileID: 2800000, guid: df45f58a764042dfa3f7e7328ea84c12, type: 3}
   leftHand: {fileID: 4300000, guid: 7d251e5a2bffbea458c60493d8708b48, type: 2}
   rightHand: {fileID: 4300000, guid: 0532373d17972b348b01302ede5e7484, type: 2}
   stackedLeftHand: {fileID: 4300000, guid: 1080a44ed1766404a822daf0e8767eda, type: 2}
@@ -21,10 +56,10 @@ MonoBehaviour:
   hologramMaterial: {fileID: 2100000, guid: 8ff5f302cb3f54246a2646f9be455d31, type: 2}
   clothedPatientBody: {fileID: 4300000, guid: c62cc9a3483289a42b04a02ff150ddf7, type: 2}
   captureRadius: 0.085
+  upperHandCaptureRadius: 0.12
   releaseRadius: 0.14
   palmAngle: 45
   fingerAngle: 65
-  placementHold: 1.25
   buttonDwell: 1.4
   breathingObservation: 5
   stackedHandHeight: 0.035
@@ -54,9 +89,9 @@ MonoBehaviour:
   showAnkleGrips: 1
   chestOffset: {x: 0, y: 0.115, z: -0.08}
   shoulderOffset: {x: 0, y: 0.081, z: 0}
-  relaxedFingerCurl: 18
-  relaxedFingerCurlDistal: 28
-  relaxedThumbCurl: 14
+  relaxedFingerCurl: 0
+  relaxedFingerCurlDistal: 0
+  relaxedThumbCurl: 0
   controllerPalmOffset: {x: 0, y: -0.035, z: 0.04}
   controllerPalmEuler: {x: 0, y: 0, z: 0}
   menuScene: 1_MainMenu

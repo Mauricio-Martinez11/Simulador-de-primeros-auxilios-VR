@@ -1,0 +1,74 @@
+[
+  {
+    "name": "01_Seguridad",
+    "size": [
+      1280,
+      720
+    ],
+    "fps": 24,
+    "seconds": 6,
+    "keyframes": 4,
+    "animation": "held poses",
+    "compressionRate": null
+  },
+  {
+    "name": "02_Respuesta",
+    "size": [
+      1280,
+      720
+    ],
+    "fps": 24,
+    "seconds": 6,
+    "keyframes": 4,
+    "animation": "held poses",
+    "compressionRate": null
+  },
+  {
+    "name": "03_Respiracion",
+    "size": [
+      1280,
+      720
+    ],
+    "fps": 24,
+    "seconds": 6,
+    "keyframes": 4,
+    "animation": "held poses",
+    "compressionRate": null
+  },
+  {
+    "name": "04_Ayuda",
+    "size": [
+      1280,
+      720
+    ],
+    "fps": 24,
+    "seconds": 6,
+    "keyframes": 4,
+    "animation": "held poses",
+    "compressionRate": null
+  },
+  {
+    "name": "05_Manos",
+    "size": [
+      1280,
+      720
+    ],
+    "fps": 24,
+    "seconds": 6,
+    "keyframes": 4,
+    "animation": "held poses",
+    "compressionRate": null
+  },
+  {
+    "name": "06_Compresiones",
+    "size": [
+      1280,
+      720
+    ],
+    "fps": 24,
+    "seconds": 6,
+    "keyframes": 4,
+    "animation": "local mesh",
+    "compressionRate": 110
+  }
+]

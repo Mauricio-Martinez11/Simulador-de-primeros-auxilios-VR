@@ -5,6 +5,25 @@ namespace FirstAidVR.Rcp
     [CreateAssetMenu(menuName = "Primeros auxilios/Configuración RCP")]
     public sealed class CprTrainingSettings : ScriptableObject
     {
+        [Header("Estación fija y práctica evaluada")]
+        [Tooltip("Desactiva temporalmente el traslado y el desplome. Conserva la implementación experimental.")]
+        public bool stationaryPractice = true;
+        [Range(10, 120)] public int practiceCompressions = 30;
+        [Range(60, 140)] public float minimumRate = 100;
+        [Range(100, 180)] public float maximumRate = 120;
+        [Range(.025f, .07f)] public float minimumVirtualDepth = .05f;
+        [Range(.04f, .09f)] public float maximumVirtualDepth = .06f;
+        [Range(.005f, .015f)] public float compressionReturn = .008f;
+        [Range(.012f, .03f)] public float compressionActivation = .018f;
+        [Range(3, 10)] public int rateWindow = 6;
+        [Range(1.5f, 5)] public float practicePauseSeconds = 2;
+        [Range(.05f, .15f)] public float compressionZoneRadius = .085f;
+        [Range(.5f, 1.5f)] public float maximumStationLift = 1.2f;
+        [Tooltip("Audio de instrucciones en el mismo orden que CprPracticeStep.")]
+        public AudioClip[] practiceInstructions;
+        [Tooltip("Seis clips locales: seguridad, respuesta, respiración, ayuda, manos y compresiones.")]
+        public UnityEngine.Video.VideoClip[] practiceVideos;
+        public Texture2D[] practiceVideoPosters;
         [Header("Manos de Meta, horneadas en postura abierta")]
         public Mesh leftHand;
         public Mesh rightHand;
@@ -17,16 +36,17 @@ namespace FirstAidVR.Rcp
         public Mesh clothedPatientBody;
         [Header("Detección en metros / segundos")]
         [Range(.03f, .15f)] public float captureRadius = .085f;
+        [Tooltip("Tolerancia para reconocer la mano izquierda superior cuando se superpone y oculta la derecha.")]
+        [Range(.08f, .16f)] public float upperHandCaptureRadius = .12f;
         [Range(.08f, .25f)] public float releaseRadius = .14f;
         [Range(10, 75)] public float palmAngle = 45;
         [Range(10, 90)] public float fingerAngle = 65;
-        [Range(.4f, 3)] public float placementHold = 1.25f;
         [Range(.5f, 3)] public float buttonDwell = 1.4f;
         [Range(3, 10)] public float breathingObservation = 5;
         [Range(.03f, .08f)] public float stackedHandHeight = .035f;
         [Tooltip("Separación adicional para evitar que choquen los mandos. Solo aproximación de postura.")]
         public float controllerStackExtra = .065f;
-        [Header("Enganche de manos: izquierda debajo, derecha encima")]
+        [Header("Enganche de manos: derecha debajo, izquierda encima")]
         [Range(.5f, 5)] public float lowerHandOcclusionGrace = 3;
         [Range(.2f, 2)] public float bothHandsLostGrace = .8f;
         [Range(.05f, .4f)] public float separationHold = .12f;
@@ -58,9 +78,9 @@ namespace FirstAidVR.Rcp
         public Vector3 shoulderOffset = new Vector3(0, .081f, 0);
         [Header("Postura pasiva de las manos")]
         [Tooltip("Curvatura adicional de los dedos cuando el paciente está relajado; no cambia el agarre del usuario.")]
-        [Range(0, 35)] public float relaxedFingerCurl = 18;
-        [Range(0, 45)] public float relaxedFingerCurlDistal = 28;
-        [Range(0, 30)] public float relaxedThumbCurl = 14;
+        [Range(0, 35)] public float relaxedFingerCurl = 0;
+        [Range(0, 45)] public float relaxedFingerCurlDistal = 0;
+        [Range(0, 30)] public float relaxedThumbCurl = 0;
         [Header("Mandos: punto aproximado del talón de la mano desde el grip")]
         public Vector3 controllerPalmOffset = new Vector3(0, -.035f, .04f);
         public Vector3 controllerPalmEuler = Vector3.zero;
@@ -68,6 +88,11 @@ namespace FirstAidVR.Rcp
 
         private void OnValidate()
         {
+            practiceCompressions = Mathf.Clamp(practiceCompressions, 10, 120);
+            maximumRate = Mathf.Max(minimumRate + 5, maximumRate);
+            maximumVirtualDepth = Mathf.Max(minimumVirtualDepth + .005f, maximumVirtualDepth);
+            compressionActivation = Mathf.Max(compressionReturn + .005f, compressionActivation);
+            rateWindow = Mathf.Clamp(rateWindow, 3, 10);
             releaseRadius = Mathf.Max(captureRadius + .02f, releaseRadius);
             breathingObservation = Mathf.Clamp(breathingObservation, 3, 10);
             grabReleaseThreshold = Mathf.Min(grabReleaseThreshold, grabThreshold - .1f);

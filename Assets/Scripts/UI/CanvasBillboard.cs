@@ -1,31 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
+using FirstAidVR.Rcp;
 
+// Kept under the serialized component name. The menu is now a fixed world-space panel.
 public class CanvasBillboard : MonoBehaviour
 {
-    private Transform cameraTransform;
-
-    void Start()
+    void OnEnable() { CprWorldRecenter.Recentered+=PlaceInFront; PlaceInFront(); }
+    void OnDisable() { CprWorldRecenter.Recentered-=PlaceInFront; }
+    IEnumerator Start()
     {
-        Camera mainCamera = Camera.main;
-
-        if (mainCamera != null)
-        {
-            cameraTransform = mainCamera.transform;
-        }
+        while(CprWorldRecenter.ViewCamera()==null) yield return null;
+        yield return null;
+        PlaceInFront();
     }
-
-    void LateUpdate()
+    public void PlaceInFront()
     {
-        if (cameraTransform == null) return;
-
-        Vector3 direction = transform.position - cameraTransform.position;
-        direction.y = 0;
-
-        if (direction.sqrMagnitude > 0.001f)
-        {
-            transform.rotation = Quaternion.LookRotation(direction);
-        }
+        var camera=CprWorldRecenter.ViewCamera(); var canvas=GetComponentInChildren<Canvas>(true);
+        if(camera!=null && canvas!=null)
+            CprWorldRecenter.Align(transform,canvas.transform,camera.transform,3,false);
     }
 }

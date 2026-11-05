@@ -1,0 +1,204 @@
+﻿{
+    "words":  [
+                  {
+                      "time":  0.094125,
+                      "start":  0,
+                      "length":  4
+                  },
+                  {
+                      "time":  0.353125,
+                      "start":  5,
+                      "length":  11
+                  },
+                  {
+                      "time":  1.1,
+                      "start":  17,
+                      "length":  2
+                  },
+                  {
+                      "time":  1.237125,
+                      "start":  20,
+                      "length":  5
+                  },
+                  {
+                      "time":  2.0375,
+                      "start":  27,
+                      "length":  6
+                  },
+                  {
+                      "time":  2.533875,
+                      "start":  34,
+                      "length":  3
+                  },
+                  {
+                      "time":  2.76806259,
+                      "start":  38,
+                      "length":  2
+                  },
+                  {
+                      "time":  2.89075,
+                      "start":  41,
+                      "length":  4
+                  },
+                  {
+                      "time":  3.23775,
+                      "start":  46,
+                      "length":  3
+                  },
+                  {
+                      "time":  3.418375,
+                      "start":  50,
+                      "length":  5
+                  },
+                  {
+                      "time":  3.80243754,
+                      "start":  56,
+                      "length":  2
+                  },
+                  {
+                      "time":  3.90725,
+                      "start":  59,
+                      "length":  5
+                  },
+                  {
+                      "time":  4.3,
+                      "start":  65,
+                      "length":  9
+                  },
+                  {
+                      "time":  4.945875,
+                      "start":  75,
+                      "length":  1
+                  },
+                  {
+                      "time":  5.06293774,
+                      "start":  77,
+                      "length":  5
+                  },
+                  {
+                      "time":  5.50631237,
+                      "start":  83,
+                      "length":  2
+                  },
+                  {
+                      "time":  5.6171875,
+                      "start":  86,
+                      "length":  7
+                  },
+                  {
+                      "time":  6.11206245,
+                      "start":  94,
+                      "length":  2
+                  },
+                  {
+                      "time":  6.222875,
+                      "start":  97,
+                      "length":  9
+                  },
+                  {
+                      "time":  6.884125,
+                      "start":  107,
+                      "length":  3
+                  },
+                  {
+                      "time":  7.10725,
+                      "start":  111,
+                      "length":  2
+                  },
+                  {
+                      "time":  7.23,
+                      "start":  114,
+                      "length":  6
+                  },
+                  {
+                      "time":  8.708625,
+                      "start":  122,
+                      "length":  7
+                  },
+                  {
+                      "time":  9.1655,
+                      "start":  130,
+                      "length":  8
+                  },
+                  {
+                      "time":  10.7503128,
+                      "start":  140,
+                      "length":  6
+                  },
+                  {
+                      "time":  11.097,
+                      "start":  147,
+                      "length":  5
+                  },
+                  {
+                      "time":  12.4521875,
+                      "start":  154,
+                      "length":  7
+                  },
+                  {
+                      "time":  12.86975,
+                      "start":  162,
+                      "length":  2
+                  },
+                  {
+                      "time":  12.9758129,
+                      "start":  165,
+                      "length":  8
+                  },
+                  {
+                      "time":  13.5360622,
+                      "start":  174,
+                      "length":  6
+                  },
+                  {
+                      "time":  13.9858122,
+                      "start":  181,
+                      "length":  6
+                  },
+                  {
+                      "time":  14.4651871,
+                      "start":  188,
+                      "length":  1
+                  },
+                  {
+                      "time":  14.5481253,
+                      "start":  190,
+                      "length":  7
+                  },
+                  {
+                      "time":  15.0751877,
+                      "start":  198,
+                      "length":  3
+                  },
+                  {
+                      "time":  15.2701874,
+                      "start":  202,
+                      "length":  11
+                  },
+                  {
+                      "time":  16.1311874,
+                      "start":  214,
+                      "length":  5
+                  },
+                  {
+                      "time":  16.4175625,
+                      "start":  220,
+                      "length":  3
+                  },
+                  {
+                      "time":  16.6451874,
+                      "start":  224,
+                      "length":  8
+                  },
+                  {
+                      "time":  17.2120628,
+                      "start":  233,
+                      "length":  2
+                  },
+                  {
+                      "time":  17.30675,
+                      "start":  236,
+                      "length":  8
+                  }
+              ]
+}

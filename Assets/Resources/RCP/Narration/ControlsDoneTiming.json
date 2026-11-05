@@ -1,0 +1,59 @@
+﻿{
+    "words":  [
+                  {
+                      "time":  0.1,
+                      "start":  0,
+                      "length":  3
+                  },
+                  {
+                      "time":  0.3344375,
+                      "start":  4,
+                      "length":  4
+                  },
+                  {
+                      "time":  1.6415,
+                      "start":  10,
+                      "length":  2
+                  },
+                  {
+                      "time":  1.8255,
+                      "start":  13,
+                      "length":  6
+                  },
+                  {
+                      "time":  2.20406246,
+                      "start":  20,
+                      "length":  11
+                  },
+                  {
+                      "time":  2.90406251,
+                      "start":  32,
+                      "length":  3
+                  },
+                  {
+                      "time":  3.145,
+                      "start":  36,
+                      "length":  8
+                  },
+                  {
+                      "time":  4.86906242,
+                      "start":  46,
+                      "length":  5
+                  },
+                  {
+                      "time":  5.2819376,
+                      "start":  52,
+                      "length":  8
+                  },
+                  {
+                      "time":  5.84775,
+                      "start":  61,
+                      "length":  4
+                  },
+                  {
+                      "time":  6.12193727,
+                      "start":  66,
+                      "length":  8
+                  }
+              ]
+}

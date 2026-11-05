@@ -1,0 +1,269 @@
+﻿{
+    "words":  [
+                  {
+                      "time":  0.094125,
+                      "start":  0,
+                      "length":  4
+                  },
+                  {
+                      "time":  0.353125,
+                      "start":  5,
+                      "length":  11
+                  },
+                  {
+                      "time":  1.1,
+                      "start":  17,
+                      "length":  2
+                  },
+                  {
+                      "time":  1.242,
+                      "start":  20,
+                      "length":  5
+                  },
+                  {
+                      "time":  1.655625,
+                      "start":  26,
+                      "length":  3
+                  },
+                  {
+                      "time":  1.84906244,
+                      "start":  30,
+                      "length":  3
+                  },
+                  {
+                      "time":  2.04,
+                      "start":  34,
+                      "length":  5
+                  },
+                  {
+                      "time":  2.87906241,
+                      "start":  41,
+                      "length":  6
+                  },
+                  {
+                      "time":  3.38,
+                      "start":  48,
+                      "length":  3
+                  },
+                  {
+                      "time":  3.60806251,
+                      "start":  52,
+                      "length":  2
+                  },
+                  {
+                      "time":  3.73075,
+                      "start":  55,
+                      "length":  4
+                  },
+                  {
+                      "time":  4.071625,
+                      "start":  60,
+                      "length":  2
+                  },
+                  {
+                      "time":  4.183625,
+                      "start":  63,
+                      "length":  5
+                  },
+                  {
+                      "time":  4.58,
+                      "start":  69,
+                      "length":  9
+                  },
+                  {
+                      "time":  5.22393751,
+                      "start":  79,
+                      "length":  1
+                  },
+                  {
+                      "time":  5.34425,
+                      "start":  81,
+                      "length":  5
+                  },
+                  {
+                      "time":  5.7654376,
+                      "start":  87,
+                      "length":  10
+                  },
+                  {
+                      "time":  6.46775,
+                      "start":  98,
+                      "length":  2
+                  },
+                  {
+                      "time":  6.59,
+                      "start":  101,
+                      "length":  6
+                  },
+                  {
+                      "time":  7.0735,
+                      "start":  108,
+                      "length":  1
+                  },
+                  {
+                      "time":  7.2,
+                      "start":  110,
+                      "length":  2
+                  },
+                  {
+                      "time":  7.305,
+                      "start":  113,
+                      "length":  6
+                  },
+                  {
+                      "time":  8.79,
+                      "start":  121,
+                      "length":  7
+                  },
+                  {
+                      "time":  9.245625,
+                      "start":  129,
+                      "length":  9
+                  },
+                  {
+                      "time":  10.9833746,
+                      "start":  140,
+                      "length":  6
+                  },
+                  {
+                      "time":  11.3200626,
+                      "start":  147,
+                      "length":  5
+                  },
+                  {
+                      "time":  11.6478748,
+                      "start":  153,
+                      "length":  5
+                  },
+                  {
+                      "time":  12.012,
+                      "start":  159,
+                      "length":  2
+                  },
+                  {
+                      "time":  12.11175,
+                      "start":  162,
+                      "length":  5
+                  },
+                  {
+                      "time":  12.5000629,
+                      "start":  168,
+                      "length":  9
+                  },
+                  {
+                      "time":  14.1314373,
+                      "start":  179,
+                      "length":  7
+                  },
+                  {
+                      "time":  14.5604372,
+                      "start":  187,
+                      "length":  2
+                  },
+                  {
+                      "time":  14.666688,
+                      "start":  190,
+                      "length":  8
+                  },
+                  {
+                      "time":  15.6844378,
+                      "start":  200,
+                      "length":  3
+                  },
+                  {
+                      "time":  15.9264374,
+                      "start":  204,
+                      "length":  5
+                  },
+                  {
+                      "time":  16.34825,
+                      "start":  210,
+                      "length":  12
+                  },
+                  {
+                      "time":  17.1881866,
+                      "start":  223,
+                      "length":  2
+                  },
+                  {
+                      "time":  17.322937,
+                      "start":  226,
+                      "length":  9
+                  },
+                  {
+                      "time":  17.9261246,
+                      "start":  236,
+                      "length":  5
+                  },
+                  {
+                      "time":  18.232687,
+                      "start":  242,
+                      "length":  8
+                  },
+                  {
+                      "time":  18.7951241,
+                      "start":  251,
+                      "length":  4
+                  },
+                  {
+                      "time":  19.0948753,
+                      "start":  256,
+                      "length":  6
+                  },
+                  {
+                      "time":  20.5959377,
+                      "start":  264,
+                      "length":  6
+                  },
+                  {
+                      "time":  20.9459381,
+                      "start":  271,
+                      "length":  6
+                  },
+                  {
+                      "time":  21.4226246,
+                      "start":  278,
+                      "length":  1
+                  },
+                  {
+                      "time":  21.5073128,
+                      "start":  280,
+                      "length":  7
+                  },
+                  {
+                      "time":  22.0426254,
+                      "start":  288,
+                      "length":  3
+                  },
+                  {
+                      "time":  22.2376251,
+                      "start":  292,
+                      "length":  11
+                  },
+                  {
+                      "time":  23.0986252,
+                      "start":  304,
+                      "length":  5
+                  },
+                  {
+                      "time":  23.3771877,
+                      "start":  310,
+                      "length":  3
+                  },
+                  {
+                      "time":  23.6126251,
+                      "start":  314,
+                      "length":  8
+                  },
+                  {
+                      "time":  24.17025,
+                      "start":  323,
+                      "length":  2
+                  },
+                  {
+                      "time":  24.266,
+                      "start":  326,
+                      "length":  8
+                  }
+              ]
+}

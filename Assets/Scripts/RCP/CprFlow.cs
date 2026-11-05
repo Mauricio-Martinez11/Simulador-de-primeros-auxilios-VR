@@ -1,17 +1,18 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace FirstAidVR.Rcp
 {
     public enum CprStep { Safety, MovePatient, Response, Breathing, CallForHelp, LowerHand, UpperHand, Ready }
+    public enum CprReleaseReason { None, HandsSeparated, AwayFromChest }
 
     public struct CprHandSample
     {
-        public bool valid, controller, gripValid;
+        public bool valid, controller, gripValid, reliable;
         public float grip;
         // Measured pose only: origin = heel, +Y = dorsum, +Z = fingers.
         public Pose pose;
         public CprHandSample(Pose pose, bool controller = false, float grip = 0, bool gripValid = false)
-        { this.pose = pose; this.controller = controller; this.grip = grip; this.gripValid = gripValid; valid = true; }
+        { this.pose = pose; this.controller = controller; this.grip = grip; this.gripValid = gripValid; valid = reliable = true; }
     }
 
     /// <summary>Visual poses never feed detection. Occlusion is an explicit latch state.</summary>
@@ -23,15 +24,23 @@ namespace FirstAidVR.Rcp
         public bool LeftAligned { get; private set; }
         public bool RightAligned { get; private set; }
         public bool ObservationTimedOut { get; private set; }
-        public bool LowerLatched => LowerHand == 0 && (Step == CprStep.UpperHand || Step == CprStep.Ready);
+        public bool LowerLatched => LowerHand == 1 && (Step == CprStep.UpperHand || Step == CprStep.Ready);
         public bool StackLatched => Step == CprStep.Ready;
         public bool UsingOcclusion { get; private set; }
-        private float held, elapsed, observed, observationClock, leftAway, rightAway, leftLost, bothLost;
+        public CprReleaseReason LastReleaseReason { get; private set; }
+        public bool ReleasePending => topAway > 0 || lowerAway > 0 || separationEvidence > 0;
+        // Compression tolerances are deliberately wider than initial placement tolerances.
+        public const float CompressionReleaseHold = .18f;
+        private float separationEvidence;
+        private float held, elapsed, observed, observationClock, lowerAway, topAway, lowerLost, bothLost;
         private bool observationStarted;
         private readonly CprTrainingSettings settings;
 
         public CprFlow(CprTrainingSettings settings) { this.settings = settings; Restart(); }
         public void Restart() { LowerHand = -1; ObservationTimedOut = false; Enter(CprStep.Safety); }
+        // The fixed station reuses only the measured placement/occlusion state machine.
+        public void StartPlacement() { LowerHand = -1; LastReleaseReason = CprReleaseReason.None; Enter(CprStep.LowerHand); }
+        public void ClearReleaseEvidence() { lowerAway = topAway = separationEvidence = 0; }
         public void Suspend()
         {
             if (LowerLatched) ReleaseLower();
@@ -52,7 +61,8 @@ namespace FirstAidVR.Rcp
         private void Enter(CprStep step)
         {
             Step = step;
-            held = elapsed = observed = observationClock = leftAway = rightAway = leftLost = bothLost = Progress = 0;
+            ClearReleaseEvidence();
+            held = elapsed = observed = observationClock = lowerAway = topAway = lowerLost = bothLost = Progress = 0;
             observationStarted = LeftAligned = RightAligned = UsingOcclusion = false;
         }
         private void ReleaseLower() { LowerHand = -1; Enter(CprStep.LowerHand); }
@@ -89,48 +99,88 @@ namespace FirstAidVR.Rcp
             }
             else if (Step == CprStep.LowerHand)
             {
-                LeftAligned = Matches(left, lower, settings.captureRadius, settings.palmAngle, settings.fingerAngle);
-                RightAligned = false;
-                if (Hold(LeftAligned, dt, settings.placementHold))
-                { LowerHand = 0; Enter(CprStep.UpperHand); LeftAligned = true; }
+                RightAligned = Matches(right, lower, settings.captureRadius, settings.palmAngle, settings.fingerAngle);
+                LeftAligned = false;
+                if (RightAligned)
+                { LowerHand = 1; Enter(CprStep.UpperHand); RightAligned = true; }
             }
             else if (LowerLatched) TickStack(dt, left, right, lower, upper);
+        }
+
+        public void TickCompression(float dt, CprHandSample left, CprHandSample right, Pose lower, Pose upper)
+        {
+            if (!StackLatched) return;
+            dt = Mathf.Clamp(dt, 0, .1f);
+            var normal = lower.rotation * Vector3.up;
+            bool seeLeft = left.valid && left.reliable, seeRight = right.valid && right.reliable;
+            bool separated = false;
+            if (seeLeft && seeRight)
+            {
+                var delta = left.pose.position - right.pose.position;
+                separated = delta.magnitude > Mathf.Max(.14f, settings.handSeparation)
+                    + (left.controller ? settings.controllerStackExtra : 0);
+            }
+            // Occluded fingers can flip palm orientation or swap apparent stack order.
+            // Neither is evidence that the user deliberately separated their hands.
+            topAway = seeLeft && ClearlyAway(left, upper, normal) ? topAway + dt : 0;
+            lowerAway = seeRight && ClearlyAway(right, lower, normal) ? lowerAway + dt : 0;
+            separationEvidence = separated ? separationEvidence + dt : 0;
+            if (separationEvidence >= CompressionReleaseHold || topAway >= CompressionReleaseHold || lowerAway >= CompressionReleaseHold)
+            {
+                var reason = separationEvidence >= CompressionReleaseHold ? CprReleaseReason.HandsSeparated : CprReleaseReason.AwayFromChest;
+                ReleaseLower(); LastReleaseReason = reason; return;
+            }
+            UsingOcclusion = !seeLeft || !seeRight;
+            LeftAligned = RightAligned = true;
+        }
+
+        private bool ClearlyAway(CprHandSample hand, Pose target, Vector3 normal)
+        {
+            var offset = hand.pose.position - target.position;
+            return Vector3.ProjectOnPlane(offset, normal).magnitude > Mathf.Max(.20f, settings.releaseRadius)
+                || Vector3.Dot(offset, normal) > .18f || Vector3.Dot(offset, normal) < -.20f;
         }
 
         private void TickStack(float dt, CprHandSample left, CprHandSample right, Pose lower, Pose upper)
         {
             bool locked = StackLatched;
             var topTarget = upper;
-            if (right.controller) topTarget.position += upper.rotation * Vector3.up * settings.controllerStackExtra;
-            bool baseOk = Matches(left, lower, settings.releaseRadius, settings.palmAngle + 15, settings.fingerAngle + 10);
-            bool topOk = Matches(right, topTarget, locked ? settings.releaseRadius : settings.captureRadius,
-                settings.palmAngle + (locked ? 15 : 0), settings.fingerAngle + (locked ? 10 : 0));
+            if (left.controller) topTarget.position += upper.rotation * Vector3.up * settings.controllerStackExtra;
+            bool baseOk = Matches(right, lower, settings.releaseRadius, settings.palmAngle + 15, settings.fingerAngle + 10);
+            bool topOk = Matches(left, topTarget, locked ? settings.releaseRadius : settings.upperHandCaptureRadius,
+                settings.palmAngle + (locked ? 15 : 10), settings.fingerAngle + 10);
             // Reject hands side by side or at the same height within overlapping capture spheres.
-            var stackDelta = right.pose.position - (left.valid ? left.pose.position : lower.position);
+            var stackDelta = left.pose.position - (right.valid ? right.pose.position : lower.position);
             var normal = lower.rotation * Vector3.up;
             float height = Vector3.Dot(stackDelta, normal);
-            bool ordered = height >= .012f && Vector3.ProjectOnPlane(stackDelta, normal).magnitude <= .10f;
+            bool ordered = height >= .012f && height <= settings.handSeparation + (left.controller ? settings.controllerStackExtra : 0)
+                && Vector3.ProjectOnPlane(stackDelta, normal).magnitude <= .10f;
             topOk &= ordered;
             bool separated = left.valid && right.valid &&
-                (stackDelta.magnitude > settings.handSeparation + (right.controller ? settings.controllerStackExtra : 0) || height < -.015f);
-            leftLost = left.valid || topOk ? 0 : leftLost + dt;
+                (stackDelta.magnitude > settings.handSeparation + (left.controller ? settings.controllerStackExtra : 0) || height < -.015f);
+            lowerLost = right.valid || topOk ? 0 : lowerLost + dt;
             bothLost = left.valid || right.valid ? 0 : bothLost + dt;
-            leftAway = left.valid && !baseOk ? leftAway + dt : 0;
-            rightAway = right.valid && (!topOk || separated) ? rightAway + dt : 0;
-            if (bothLost >= settings.bothHandsLostGrace || leftAway >= settings.separationHold)
+            lowerAway = right.valid && !baseOk ? lowerAway + dt : 0;
+            topAway = left.valid && (!topOk || separated) ? topAway + dt : 0;
+            if ((!locked && bothLost >= settings.bothHandsLostGrace) || lowerAway >= settings.separationHold)
             { ReleaseLower(); return; }
             // The visible upper hand supports the captured lower hand during overlap.
-            if (!left.valid && !topOk && leftLost >= settings.lowerHandOcclusionGrace)
+            if (!locked && !right.valid && !topOk && lowerLost >= settings.lowerHandOcclusionGrace)
             { ReleaseLower(); return; }
-            if (locked && rightAway >= settings.separationHold)
-            { Enter(CprStep.UpperHand); LeftAligned = baseOk; return; }
+            if (locked && topAway >= settings.separationHold)
+            {
+                if (!baseOk) ReleaseLower();
+                else { Enter(CprStep.UpperHand); RightAligned = true; }
+                return;
+            }
 
-            bool supportedBase = baseOk || (!left.valid && (leftLost < settings.lowerHandOcclusionGrace || topOk));
-            UsingOcclusion = supportedBase && (!left.valid || (locked && !right.valid));
-            LeftAligned = supportedBase;
-            RightAligned = locked || (topOk && ordered && supportedBase && !separated);
+            bool supportedBase = baseOk || (!right.valid && (locked || lowerLost < settings.lowerHandOcclusionGrace || topOk));
+            UsingOcclusion = locked ? !right.valid || !left.valid : supportedBase && !right.valid;
+            RightAligned = supportedBase;
+            LeftAligned = topOk || locked && !left.valid;
             if (locked) { Progress = 1; return; }
-            if (Hold(supportedBase && topOk && ordered && !separated, dt, settings.placementHold))
+            Progress = 0;
+            if (supportedBase && topOk && !separated)
             {
                 bool inferred = UsingOcclusion;
                 Enter(CprStep.Ready); LeftAligned = RightAligned = true; Progress = 1; UsingOcclusion = inferred;
@@ -145,4 +195,6 @@ namespace FirstAidVR.Rcp
         }
     }
 }
+
+
 

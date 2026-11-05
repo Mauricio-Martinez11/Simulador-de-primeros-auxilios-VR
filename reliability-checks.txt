@@ -1,0 +1,2 @@
+PASS: 41 reliability, scoring and persistence checks. Input, flow and station checks passed. Synthetic data; Quest hardware verification pending.
+Simulated report: E:\Tesis Pirmeros Auxilios VR\Primeros_Auxilios_VR\Logs\SimulatedReportChecks\RCP_ced37121ade24f90bb3384558c2279fc.txt

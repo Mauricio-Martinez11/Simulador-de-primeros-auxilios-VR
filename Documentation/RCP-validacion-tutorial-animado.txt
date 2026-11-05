@@ -1,0 +1,54 @@
+VALIDACIÓN DEL TUTORIAL CONTINUO E ILUSTRADO
+Fecha: 2026-10-17
+Unity: 2022.3.62f2, plataforma Android seleccionada.
+Runner: CprStationPlayChecks.BuildAndRun.
+
+PASS: 96 comprobaciones de lógica; 449 de escena, UI y ciclo de vida.
+Se ejecutó en Logs/InteractionValidation con XR automático desactivado
+únicamente en la copia de pruebas. No se generó APK.
+
+ALCANCE VERIFICADO
+- Preparación y seis pasos por acciones observadas, sin siguiente/confirmar.
+- Seguridad exige ambos lados; respuesta, respiración, ayuda y manos no
+  avanzan simplemente por transcurrir tiempo sin realizar sus acciones.
+- Solicitud simulada: tomar teléfono y acercarlo al oído; pérdida de foco
+  cancela el agarre. El paso corresponde al cuadro 3.50 del perfil original.
+- Conservación de conteo, ritmo, recorrido virtual, retorno, recuperación
+  del seguimiento, puntuación y cierre del intento.
+- Cuatro pantallas fijas y ajuste lateral de altura; sin seguir la cámara.
+- Opciones ocultas inicialmente; controles ISDK y arrastre por láser,
+  bloqueo sin foco y ausencia de botones de avance en todos los pasos.
+- Los seis clips se preparan y producen fotogramas en Unity Play Mode.
+- El vídeo se congela sin foco, continúa al recuperarlo, se pausa manualmente
+  y vuelve a reproducirse tras resultados y repetición de la práctica.
+- Texto sin desbordamientos en introducción, seis etapas y resultados.
+- Paciente fijo, materiales válidos y ausencia del modo de traslado/ragdoll.
+
+REVISIÓN VISUAL Y MEDIOS
+Se inspeccionaron los seis atlas y capturas del tutorial y resultados.
+Las ilustraciones muestran los gestos con poses nítidas; el bucle de
+compresiones utiliza movimiento local continuo. Se evitó interpolar entre
+poses distantes para no introducir imágenes dobles de manos.
+MP4: 1280 x 720, 24 fps, seis segundos, H.264 baseline; sin pista de audio.
+Los seis archivos finales se decodificaron completos con ffmpeg: código 0.
+La locución en español funciona como recurso independiente del vídeo.
+Fuentes y prompts: ArtSource/RCP. Ensamblado: Tools/GenerateCprLessons.py.
+
+ENTREGA
+Assets/Scenes/2_Tutorial_RCP.unity y TrainingSettings.asset proceden de la
+copia validada; se conservaron sus GUID y se copiaron los metadatos de vídeo.
+stationaryPractice: true; desktopPreview: false.
+Capturas: RCP-tutorial-animado.png y RCP-tutorial-resultados.png.
+El 50/100 de resultados corresponde a datos de prueba deliberadamente
+rápidos y excesivos; no es una nota fija ni un valor prefijado para el usuario.
+
+LÍMITES
+Las entradas de las pruebas son controladas. Falta comprobar alcance del
+teléfono, comodidad, oclusiones reales, legibilidad y rendimiento en Quest.
+WindowsMediaFoundation informa color primaries desconocidas al importar
+los clips; se verificaron reproducción y capturas, sin errores de script.
+Los avisos de plugins nativos opcionales de Meta en Editor no bloquearon
+el runner. Estas pruebas no equivalen a ejecutar una compilación en Android.
+Los indicadores miden movimiento virtual; no fuerza ni profundidad física.
+La regresión anterior del modo experimental está registrada por separado
+en RCP-validacion-estacion-fija.txt; ese modo continúa desactivado.

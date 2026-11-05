@@ -1,0 +1,220 @@
+{
+  "entries": [
+    {
+      "key": "MenuWelcome",
+      "title": "Bienvenido al simulador",
+      "hint": "Conoce los controles a tu ritmo, o ve al menú principal.",
+      "text": "Hola, bienvenido al simulador de primeros auxilios. Antes de comenzar, puedes realizar un recorrido breve para conocer el entorno y aprender a usar las manos o los mandos. Te acompañaré paso a paso, con calma. A tu izquierda podrás leer lo que voy diciendo y ver el progreso del audio. A tu derecha puedes repetir una indicación, volver al paso anterior o avanzar durante el recorrido. ¿Te gustaría escuchar las instrucciones? Si es tu primera vez, selecciona Escuchar instrucciones. Si ya tienes experiencia con la realidad virtual, puedes saltarlas e ir al menú principal. Allí selecciona Tutorial para empezar y elegir si quieres practicar en realidad virtual o en realidad mixta. Tómate tu tiempo y elige cuando estés listo."
+    },
+    {
+      "key": "Welcome",
+      "title": "Elige tu entorno",
+      "hint": "Elige cómo quieres practicar.",
+      "text": "Antes de iniciar el tutorial de RCP, elige dónde quieres practicar. En el entorno virtual verás al paciente y las pantallas dentro del simulador. En realidad mixta verás tu espacio real junto al paciente y las guías. Selecciona la opción que prefieras para continuar."
+    },
+    {
+      "key": "Virtual",
+      "title": "Entorno virtual",
+      "hint": "Colócate al costado. Ajusta la altura si lo necesitas.",
+      "text": "Has elegido el entorno virtual. Practicarás con el paciente y las pantallas que tienes delante. Colócate cómodamente a su costado y deja espacio para mover las manos. Si necesitas adaptar la estación, utiliza el control de altura situado a la derecha. El paciente y las pantallas se moverán juntos."
+    },
+    {
+      "key": "Mixed",
+      "title": "Realidad mixta",
+      "hint": "¿Quieres utilizar un apoyo físico?",
+      "text": "Has elegido realidad mixta. Ahora puedes ver tu entorno real junto con el paciente y las guías del tutorial. Puedes continuar utilizando únicamente el paciente virtual o alinear un apoyo físico con la zona del pecho. Para practicar compresiones físicas, utiliza un maniquí de entrenamiento. Si eliges una almohada o mochila, úsala solamente como referencia de apoyo para las manos, sin intentar reproducir la fuerza de una compresión real. ¿Quieres configurar un apoyo físico?"
+    },
+    {
+      "key": "Align",
+      "title": "Alinea tu apoyo",
+      "hint": "Coloca tu apoyo bajo la guía del pecho y confirma cuando coincida.",
+      "text": "Coloca el maniquí o el apoyo elegido sobre una superficie estable, dentro de una zona despejada. Verás al paciente representado como un holograma tenue. Coloca tu apoyo físico hasta que coincida con la zona señalada del pecho. Comprueba que puedas ver el objeto real y que las guías no lo oculten. Cuando consideres que está bien alineado, pulsa Confirmar alineación."
+    },
+    {
+      "key": "Aligned",
+      "title": "Apoyo preparado",
+      "hint": "Si mueves el objeto, pausa y vuelve a alinearlo.",
+      "text": "La referencia está preparada. El paciente permanecerá semitransparente para que puedas ver el apoyo real. Las guías de manos señalarán el punto de contacto que acabas de ajustar. Si el objeto cambia de lugar, pausa la práctica y vuelve a alinearlo antes de continuar."
+    },
+    {
+      "key": "Look",
+      "title": "Conoce tu entorno",
+      "hint": "Mira suavemente a ambos lados.",
+      "text": "Antes de comenzar, vamos a familiarizarnos con el entorno. Mira suavemente a tu alrededor. Las pantallas permanecerán delante de ti."
+    },
+    {
+      "key": "Hands",
+      "title": "Encuentra tus manos",
+      "hint": "Lleva las manos frente al visor.",
+      "text": "Lleva las manos frente al visor, en una posición cómoda, y comprueba que aparecen en la escena."
+    },
+    {
+      "key": "SelectHands",
+      "title": "Prueba la selección",
+      "hint": "Apunta con el rayo. Junta índice y pulgar y después sepáralos.",
+      "text": "Para seleccionar un botón con las manos, apunta con el rayo al botón iluminado y junta suavemente el índice y el pulgar. Después sepáralos. Prueba ahora sobre el botón iluminado. Durante el tutorial, las manos holográficas te mostrarán dónde realizar cada acción. Puedes pausar o repetir una explicación desde las opciones de práctica."
+    },
+    {
+      "key": "SelectControllers",
+      "title": "Prueba la selección",
+      "hint": "Apunta con el mando y pulsa el gatillo de selección.",
+      "text": "Para seleccionar un botón, apunta con el rayo del mando al botón iluminado y pulsa el gatillo de selección con el índice. Después suéltalo. Prueba ahora. Durante el tutorial podrás pausar o repetir una explicación desde las opciones de práctica."
+    },
+    {
+      "key": "ControlsDone",
+      "title": "Preparación completada",
+      "hint": "Elige Tutorial para comenzar.",
+      "text": "Muy bien. Ya puedes seleccionar las opciones. Elige Tutorial para comenzar."
+    },
+    {
+      "key": "Step00",
+      "title": "Prepárate",
+      "hint": "Colócate al costado del paciente.",
+      "text": "Colócate cómodamente al costado del paciente. Sigue las demostraciones y las guías de manos. La práctica comenzará cuando estés en posición."
+    },
+    {
+      "key": "Step01",
+      "title": "Revisa el entorno",
+      "hint": "Revisa ambos lados. Identifica peligros.",
+      "text": "Antes de acercarte a una persona que necesita ayuda, comprueba que el lugar sea seguro para ti y para ella. Observa a ambos lados y busca posibles peligros, como tráfico, cables eléctricos, fuego u objetos que puedan caer. Si existe un peligro, solicita ayuda y evita exponerte. En este ejercicio, mira las dos zonas iluminadas para representar esa revisión del entorno."
+    },
+    {
+      "key": "Step02",
+      "title": "Comprueba si responde",
+      "hint": "Apoya la mano y mantén el contacto durante los dos movimientos.",
+      "text": "Acércate al costado del paciente y pregúntale con voz clara: ¿Se encuentra bien? ¿Puede escucharme? Apoya una mano sobre el hombro señalado. Cuando la guía se ponga verde, mantén la mano apoyada mientras comprobamos si responde con dos movimientos suaves. Si retiras la mano, vuelve a colocarla sobre la guía."
+    },
+    {
+      "key": "Step03",
+      "title": "Observa la respiración",
+      "hint": "Observa si respira normalmente. Máximo diez segundos.",
+      "text": "Observa si el pecho se mueve y si la persona respira con normalidad. Los jadeos aislados o una respiración agónica no deben confundirse con respiración normal. Esta comprobación debe ser breve y no superar diez segundos. Cuando termine esta explicación, dirige la mirada hacia la cara y el pecho del paciente. El indicador te acompañará durante la observación."
+    },
+    {
+      "key": "Step04",
+      "title": "Solicita ayuda",
+      "hint": "Toma el teléfono y acércalo al oído.",
+      "text": "Solicita que alguien contacte al servicio local de emergencias. Si estás solo y tienes un teléfono, utiliza el altavoz para seguir las indicaciones del operador mientras ayudas. En este tutorial representaremos la solicitud de ayuda tomando el teléfono holográfico y acercándolo al oído. Puedes usar cualquiera de las dos manos."
+    },
+    {
+      "key": "Step05",
+      "title": "Coloca tus manos",
+      "hint": "Derecha sobre el pecho. Izquierda encima.",
+      "text": "Coloca el talón de una mano en el centro del pecho, sobre la mitad inferior del esternón, y sitúa la otra mano encima. Sigue este orden para colocar las manos: primero la derecha sobre la guía del pecho y después la izquierda encima. Entrelaza los dedos y sigue la orientación de los hologramas. Mantén los brazos rectos y sitúa los hombros sobre las manos. El visor reconocerá la colocación de tus manos."
+    },
+    {
+      "key": "Step06",
+      "title": "Practica compresiones",
+      "hint": "Sigue el ritmo. Baja y vuelve.",
+      "text": "Las compresiones ayudan a mantener la circulación de la sangre mientras llega ayuda. En esta práctica trabajarás la continuidad del movimiento, el ritmo y el retorno. Sigue una referencia de cien a ciento veinte compresiones por minuto. El pitido y el marcador te ayudarán: inicia la bajada cuando el marcador llegue a la zona verde y vuelve al reposo antes del siguiente pulso. Consulta también el medidor de recorrido. Su valor representa el desplazamiento virtual de tus manos."
+    },
+    {
+      "key": "Start",
+      "title": "Comienza",
+      "hint": "Baja con el pitido y vuelve al reposo.",
+      "text": "Comienza. Baja con el pitido y vuelve al reposo."
+    },
+    {
+      "key": "Step07",
+      "title": "Tu resultado",
+      "hint": "Revisa los puntos y las incidencias.",
+      "text": "Has terminado el bloque de práctica. En una emergencia real, llegar a treinta compresiones no significa que la atención haya terminado; aquí cerramos el bloque para revisar tu ejercicio. En las pantallas puedes consultar los ciclos registrados y los resultados de colocación, ritmo, recorrido virtual y retorno. Las incidencias explican qué aspectos conviene repetir. Si faltaron datos para evaluar algún criterio, aparecerá como no evaluable. Una pérdida técnica de seguimiento no se considerará un error tuyo. Recuerda que estos resultados describen tu interacción en el simulador y no sustituyen la práctica supervisada con un instructor. Puedes repetir la sesión o volver al menú."
+    },
+    {
+      "key": "Interrupted",
+      "title": "Intento interrumpido",
+      "hint": "Revisa únicamente lo observado.",
+      "text": "Has terminado el intento antes de completar el bloque. Revisaremos únicamente las acciones que el sistema pudo observar. Si faltan datos para evaluar algún criterio, aparecerá como no evaluable. Puedes repetir la sesión o volver al menú."
+    },
+    {
+      "key": "Confirm01",
+      "title": "Entorno revisado",
+      "hint": "Ahora comprobaremos la respuesta.",
+      "text": "Has completado la revisión del entorno. Ahora comprobaremos si la persona responde."
+    },
+    {
+      "key": "Confirm02",
+      "title": "No responde",
+      "hint": "Observa su respiración.",
+      "text": "En este caso, la persona no responde. Comprueba ahora si respira normalmente."
+    },
+    {
+      "key": "Confirm03",
+      "title": "No respira normalmente",
+      "hint": "Solicita ayuda.",
+      "text": "La persona no responde y no respira normalmente. Es necesario solicitar ayuda e iniciar la atención indicada."
+    },
+    {
+      "key": "Confirm04",
+      "title": "Ayuda solicitada",
+      "hint": "Prepara la colocación de manos.",
+      "text": "La solicitud de ayuda ha quedado representada. Ahora prepararemos la colocación de las manos."
+    },
+    {
+      "key": "Confirm05",
+      "title": "Manos reconocidas",
+      "hint": "Mantén la postura y escucha la explicación.",
+      "text": "El sistema ha reconocido la colocación de tus manos. Mantén la postura mientras escuchas cómo realizar el ejercicio."
+    },
+    {
+      "key": "Slow",
+      "title": "Ritmo lento",
+      "hint": "",
+      "text": "Aumenta un poco el ritmo. Sigue el pitido."
+    },
+    {
+      "key": "Fast",
+      "title": "Ritmo rápido",
+      "hint": "",
+      "text": "Vas demasiado rápido. Baja la velocidad y sigue el pitido."
+    },
+    {
+      "key": "Shallow",
+      "title": "Recorrido corto",
+      "hint": "",
+      "text": "Aumenta ligeramente el recorrido hasta la zona verde."
+    },
+    {
+      "key": "Deep",
+      "title": "Recorrido excesivo",
+      "hint": "",
+      "text": "Reduce el recorrido hasta la zona verde."
+    },
+    {
+      "key": "Return",
+      "title": "Retorno incompleto",
+      "hint": "",
+      "text": "Vuelve al reposo antes de iniciar otra bajada."
+    },
+    {
+      "key": "Away",
+      "title": "Recupera la posición",
+      "hint": "",
+      "text": "Vuelve a colocar las manos sobre la guía del pecho."
+    },
+    {
+      "key": "Separate",
+      "title": "Coloca las manos",
+      "hint": "",
+      "text": "Vuelve a colocar las dos manos: derecha en el pecho e izquierda encima. Continúa con el pitido."
+    },
+    {
+      "key": "Lost",
+      "title": "Recupera el seguimiento",
+      "hint": "",
+      "text": "No puedo ver bien tus manos. Muéstralas al visor. Esta interrupción no descuenta puntos."
+    },
+    {
+      "key": "Recovered",
+      "title": "Seguimiento recuperado",
+      "hint": "",
+      "text": "Seguimiento recuperado. Vuelve al reposo para continuar."
+    },
+    {
+      "key": "Timing",
+      "title": "Sigue el marcador",
+      "hint": "",
+      "text": "Ajusta la bajada al pitido y a la zona verde del marcador."
+    }
+  ]
+}

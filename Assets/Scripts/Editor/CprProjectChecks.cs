@@ -32,7 +32,7 @@ public static class CprProjectChecks
         {
             var tutorials = scene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<CprTutorial>()).ToArray();
             if (tutorials.Length != 1 || tutorials[0].xrCorePrefab == null) throw new InvalidOperationException("Tutorial o rig sin referencia.");
-            if (!scene.GetRootGameObjects().Any(root => root.name == "Hombre_Paciente")) throw new InvalidOperationException("Paciente no encontrado.");
+            if (!scene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<Transform>(true)).Any(t => t.name == "Hombre_Paciente")) throw new InvalidOperationException("Paciente no encontrado.");
             if (!EditorBuildSettings.scenes.Any(entry => entry.enabled && entry.path == "Assets/Scenes/2_Tutorial_RCP.unity"))
                 throw new InvalidOperationException("La escena del tutorial no está incluida en Build Settings.");
         }

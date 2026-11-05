@@ -1,0 +1,62 @@
+VALIDACIÓN DE LA ESTACIÓN FIJA DE RCP
+Fecha: 2026-10-17
+Unity: 2022.3.62f2
+
+Se revisó el perfil de proyecto proporcionado por el autor, en particular
+las secciones de secuencia guiada, métricas virtuales, evaluación y resultados.
+No se modificó el documento Word.
+
+NUEVA ESTACIÓN: PASS
+83 comprobaciones de lógica (CprStationChecks).
+160 comprobaciones de escena, UI y ciclo de vida (CprStationPlayChecks).
+
+- Secuencia con explicación previa y acciones/decisiones observadas.
+- Conteo de ciclos, ritmo conocido a 80/110/140 por minuto y muestras a
+  50/72/90 Hz; recorridos cortos, en referencia y excesivos.
+- Jitter, salida de zona, retorno incompleto y cambio de mano fuente.
+- Oclusión de la mano inferior, pérdida total de seguimiento y recuperación.
+- La pérdida de foco congela tiempo y eventos.
+- Un intento correcto conserva 100/100 tras una interrupción técnica;
+  esa pérdida no penaliza la ubicación ni genera una pausa del participante.
+- Intento vacío, cierre parcial, cierre automático a 30 ciclos y repetición.
+- Paciente fijo: no se crea traslado, destino holográfico ni ragdoll.
+- Tres paneles y un control de altura; no siguen la cámara.
+- Altura mueve conjuntamente paciente, anclas y pantallas dentro de límites.
+- Clics y arrastre de Slider mediante RayInteractable -> PointableCanvas ->
+  EventSystem, sin invocar directamente Button.onClick.
+- Bloqueo de controles sin foco/durante transición; un clic, una acción.
+- Capturas de introducción, compresiones con datos y resultados con errores.
+- Textos sin desbordamiento en los estados capturados y materiales válidos.
+
+REGRESIÓN DEL MODO EXPERIMENTAL CONSERVADO: PASS
+33 comprobaciones de presentación, 30 de RCP, 104 de ragdoll/agarre,
+68 de postura de brazos. Se ejecutó RagdollValidationRunner.Run con
+-buildTarget Android. Los scripts compilaban y el runner terminó correctamente.
+Desplazamiento pelvis: 1.317 m; máximo error articular: 0.0040 m;
+separación al elevar: 0.0361 m; penetración propia: 0.0014 m.
+
+Las pruebas se ejecutaron en una copia aislada bajo Logs/InteractionValidation,
+con inicio XR automático desactivado solo en esa copia para las entradas
+controladas. No se cerró ni modificó la sesión abierta del editor del usuario.
+Se copiaron a Assets la escena preparada y las referencias a las ocho
+locuciones. Los 30 archivos de código/configuración/escena comparados con la
+copia probada coincidían; no faltaban metadatos de scripts ni de audio.
+
+ESCENA ENTREGADA
+Assets/Scenes/2_Tutorial_RCP.unity
+stationaryPractice: true; desktopPreview: false.
+Raíz editable: RCP_Estacion_Fija.
+Capturas: RCP-estacion-vista-general.png y RCP-estacion-resultados.png.
+El resultado 44/100 de la captura usa datos deliberadamente rápidos y
+excesivos más tres decisiones incorrectas; no corresponde a un usuario real.
+
+ALCANCE
+No se generó ni instaló APK. No se ejecutó la compilación final IL2CPP/empaquetado.
+Pendiente: prueba física en Quest 3S de manos, oclusiones, comodidad,
+legibilidad, rendimiento y calibración del movimiento virtual.
+Los valores son movimiento/frecuencia virtuales, no fuerza ni profundidad
+torácica física. La puntuación educativa requiere validación institucional.
+
+Logs locales (ignorados por Git):
+Logs/StationImplementation/PlayChecksFinal.log
+Logs/StationImplementation/RegressionAndroid.log

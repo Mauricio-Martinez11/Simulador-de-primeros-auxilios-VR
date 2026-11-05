@@ -1,15 +1,17 @@
 # Simulador de primeros auxilios VR
 
-Proyecto de Unity para una práctica guiada de primeros auxilios en realidad virtual con Meta Quest. La implementación actual se centra en la secuencia de RCP, la colocación de las manos y la interacción con un paciente virtual.
+Proyecto de Unity para una práctica guiada de primeros auxilios en realidad virtual con Meta Quest. El tutorial actual utiliza una estación fija con un paciente preparado, instrucciones por pasos, compresiones virtuales y resultados del intento.
 
 ## Funciones implementadas
 
 - Inicio desde una escena de arranque, menú principal y tutorial de RCP, con un rig XR persistente.
-- Paneles de instrucciones con botones seleccionables mediante el láser de los mandos o de las manos, además de interacción cercana.
+- Cuatro pantallas fijas: progreso, demostración animada, ritmo y recorrido virtual; control lateral de altura.
+- Seis demostraciones ilustradas locales y avance continuo por acciones, sin botones de siguiente ni confirmación. Los controles opcionales quedan en un panel desplegable.
+- Instrucciones de voz en español, repetición, silencio y pulso de ritmo; botones seleccionables con el láser de las manos o mandos y mediante contacto cercano.
 - Colocación secuencial de la mano izquierda y después la derecha sobre el pecho, con guías holográficas, tolerancia a oclusiones y liberación al separar las manos.
-- Agarre con una o dos manos, arrastre y elevación del paciente, con guías que alternan entre brazos y tobillos.
-- Destino holográfico y ajuste de posición y orientación al soltar al paciente cerca del destino.
-- Ragdoll articulado con colisiones propias y límites en cintura, hombros, codos y muñecas; postura relajada de los dedos.
+- Detección de ciclos de compresión a partir del movimiento medido, con referencias de ritmo, recorrido virtual y retorno; recuperación ante pérdidas de seguimiento.
+- Puntuación educativa, correcciones, resultados por criterio, pausa, cierre parcial y repetición sin datos heredados.
+- Paciente estático con dedos relajados. El ragdoll, el arrastre y el destino holográfico quedan conservados como modo experimental desactivado.
 - Malla preparada para ocultar la piel cubierta por la ropa conservando materiales válidos en Quest.
 - Herramientas de configuración, regeneración de recursos y comprobación desde el editor.
 
@@ -32,7 +34,7 @@ git lfs pull
 1. Añade la carpeta descargada a Unity Hub y ábrela con la versión indicada.
 2. Espera a que Unity restaure los paquetes e importe los recursos.
 3. Abre `Assets/Scenes/Boobstrap.unity` y entra en Play Mode con tu entorno XR configurado.
-4. Desde el menú principal, inicia el tutorial. Los controles y ajustes se explican en [la documentación de RCP](Documentation/RCP-Tutorial.md).
+4. Desde el menú principal, inicia el tutorial. Los pasos, animaciones y controles se explican en [la guía del tutorial continuo](Documentation/RCP-Tutorial-Animado.md).
 
 Para compilar manualmente para Quest, selecciona Android en Build Settings y conserva las escenas habilitadas en este orden: `Boobstrap`, `1_MainMenu` y `2_Tutorial_RCP`. Los APK se generan localmente y no se incluyen en el repositorio.
 
@@ -44,11 +46,13 @@ Para compilar manualmente para Quest, selecciona Android en Build Settings y con
 | `Packages` | Dependencias y versiones de los paquetes. |
 | `ProjectSettings` | Configuración del proyecto, física, XR y compilación. |
 | `Documentation` | Guía de uso, capturas y registros de validación. |
+| `ArtSource/RCP` | Atlas ilustrados originales y prompts de creación. No se incluyen en la aplicación. |
+| `Tools` | Ensamblado reproducible de los vídeos a partir de sus fotogramas. |
 
 `Library`, `Temp`, `Logs`, `UserSettings` y las compilaciones se excluyen mediante `.gitignore`. Unity reconstruye sus cachés al abrir el proyecto. Conserva los archivos `.meta`: contienen los identificadores que enlazan las escenas con sus recursos.
 
 ## Validación registrada
 
-El [registro de presentación y Quest](Documentation/RCP-validacion-quest-presentacion.txt) conserva **235 comprobaciones correctas del editor**: 33 de presentación, 30 de RCP, 104 de ragdoll y agarre, y 68 de postura de brazos. También consta la compilación correcta de los scripts con Android seleccionado.
+El tutorial continuo pasó **96 comprobaciones de lógica y 449 de escena, controles ISDK, vídeo y ciclo de vida**; el [registro de validación](Documentation/RCP-validacion-tutorial-animado.txt) incluye el alcance y las limitaciones. El menú **Primeros auxilios → RCP → Verificar estación y compresiones** permite repetir las comprobaciones de lógica. La guía documenta los parámetros utilizados. [Vista de las pantallas](Documentation/RCP-tutorial-animado.png).
 
-La comprobación de esas correcciones dentro de unas Quest físicas sigue pendiente. El tutorial guía la secuencia y la colocación; no mide fuerza, profundidad ni ritmo de compresión. El traslado es una interacción del escenario y no valida una técnica clínica de movilización.
+El [registro anterior](Documentation/RCP-validacion-quest-presentacion.txt) corresponde a las 235 comprobaciones de la versión con traslado, no a la validación de la nueva estación. La prueba con manos reales dentro de Quest sigue pendiente. Los nuevos indicadores estiman movimiento y frecuencia virtuales; no miden fuerza, presión ni profundidad física, ni certifican habilidades clínicas.

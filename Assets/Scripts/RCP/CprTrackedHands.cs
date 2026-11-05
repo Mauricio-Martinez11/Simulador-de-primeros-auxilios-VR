@@ -15,6 +15,8 @@ namespace FirstAidVR.Rcp
         private readonly Dictionary<HandVisual, bool> hidden = new Dictionary<HandVisual, bool>();
         private float nextDiscovery;
         private OVRCameraRig rig;
+        private readonly string[] sources = new string[2];
+        private float nextPlacementLog;
         public Transform Head => rig != null ? rig.centerEyeAnchor : Camera.main != null ? Camera.main.transform : null;
         public OVRCameraRig Rig => rig;
 
@@ -29,6 +31,7 @@ namespace FirstAidVR.Rcp
         public CprHandSample Read(bool left, CprTrainingSettings settings)
         {
             if (hands == null || Time.unscaledTime >= nextDiscovery) Discover();
+            sources[left ? 0 : 1] = "sin seguimiento";
             var side = left ? Handedness.Left : Handedness.Right;
             Hand syntheticFallback = null;
             foreach (var hand in hands)
@@ -44,12 +47,19 @@ namespace FirstAidVR.Rcp
                     continue;
                 }
 
-                if (TryReadHand(hand, left, false, out var sample)) return sample;
+                if (TryReadHand(hand, left, false, out var sample))
+                {
+                    sources[left ? 0 : 1] = hand.name + "/" + hand.GetData().RootPoseOrigin;
+                    return sample;
+                }
             }
 
             if (Application.isEditor && syntheticFallback != null
                 && TryReadHand(syntheticFallback, left, true, out var simulatedSample))
+            {
+                sources[left ? 0 : 1] = "simulador/" + syntheticFallback.name;
                 return simulatedSample;
+            }
 
             // A grip pose is only an approximation of the anatomical heel of the hand.
             var device = InputDevices.GetDeviceAtXRNode(left ? XRNode.LeftHand : XRNode.RightHand);
@@ -58,6 +68,7 @@ namespace FirstAidVR.Rcp
                 && device.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position)
                 && device.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation))
             {
+                sources[left ? 0 : 1] = "mando XR";
                 var space = rig != null ? rig.trackingSpace : null;
                 var worldPosition = space != null ? space.TransformPoint(position) : position;
                 var worldRotation = space != null ? space.rotation * rotation : rotation;
@@ -75,7 +86,10 @@ namespace FirstAidVR.Rcp
             sample = default;
             // SyntheticHand can be marked disconnected/low-confidence while the simulator is
             // still providing valid joint poses, so those two flags are relaxed only for it.
-            if (!allowSynthetic && (!hand.IsConnected || !hand.IsHighConfidence)) return false;
+            // Ordinary Hand components also wrap synthetic sources: HandSphereMap supplies
+            // a permanently connected prefab, and LastKnownGoodHand can freeze an old pose.
+            // Testing the component type or IsTrackedDataValid alone accepts both.
+            if (!allowSynthetic && !IsCurrentTrackingData(hand.GetData())) return false;
             if (!hand.GetRootPose(out var wrist)
                 || !hand.GetJointPose(HandJointId.HandMiddle1, out var middle)
                 || !hand.GetJointPose(HandJointId.HandIndex1, out var index)
@@ -86,7 +100,24 @@ namespace FirstAidVR.Rcp
             var heel = Vector3.Lerp(wrist.position, middle.position, .22f) - normal * .012f;
             float grip = ReadGrip(hand, wrist.position, out bool gripValid);
             sample = new CprHandSample(new Pose(heel, Quaternion.LookRotation(forward, normal)), false, grip, gripValid);
+            sample.reliable = allowSynthetic || hand.GetData().IsHighConfidence;
             return true;
+        }
+
+        public static bool IsCurrentTrackingData(HandDataAsset data)
+        {
+            return data != null && data.IsDataValid && data.IsConnected && data.IsTracked
+                && (data.RootPoseOrigin == PoseOrigin.RawTrackedPose
+                    || data.RootPoseOrigin == PoseOrigin.FilteredTrackedPose);
+        }
+
+        public void LogPlacement(CprHandSample left, CprHandSample right, Pose chest, CprFlow placement)
+        {
+            if (Time.unscaledTime < nextPlacementLog) return;
+            nextPlacementLog = Time.unscaledTime + 1;
+            Debug.Log($"[RCP Hands live-source-v2] step={placement.Step} " +
+                $"right={right.valid} source={sources[1]} distance={(right.valid ? Vector3.Distance(right.pose.position,chest.position).ToString("F3") : "-")} " +
+                $"left={left.valid} source={sources[0]} distance={(left.valid ? Vector3.Distance(left.pose.position,chest.position).ToString("F3") : "-")}");
         }
 
         private static float ReadGrip(Hand hand, Vector3 wrist, out bool valid)

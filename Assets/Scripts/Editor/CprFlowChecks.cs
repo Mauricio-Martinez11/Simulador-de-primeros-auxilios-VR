@@ -35,30 +35,37 @@ public static class CprFlowChecks
             tick(2,default,default,false); Check(flow.Progress==0,"No observa sin mirar");
             tick(5.1f,default,default,true); Check(flow.Step==CprStep.CallForHelp,"Completa la observación");
             tick(1,default,default,false); flow.Confirm();
-            tick(1.5f,default,good,false); Check(flow.Step==CprStep.LowerHand,"La derecha no sustituye a la izquierda inferior");
-            tick(.6f,good,default,false); tick(.1f,default,default,false);
-            Check(flow.Progress==0 && !flow.LowerLatched,"Sin captura inicial, la pérdida borra el progreso");
-            tick(1.3f,good,default,false);
-            Check(flow.Step==CprStep.UpperHand && flow.LowerHand==0 && flow.LowerLatched,"Captura primero la izquierda");
-            tick(1.4f,good,good,false); Check(!flow.StackLatched,"No acepta manos a la misma altura");
+            tick(.1f,good,default,false); Check(flow.Step==CprStep.LowerHand,"La izquierda no sustituye a la derecha inferior");
+            tick(.02f,default,good,false);
+            Check(flow.Step==CprStep.UpperHand && flow.LowerHand==1 && flow.LowerLatched,"La derecha se coloca sin espera");
+            tick(.2f,default,away,false);
+            Check(flow.Step==CprStep.LowerHand && !flow.LowerLatched,"Mover la derecha separa su mano del holograma");
+            tick(.02f,default,good,false);
+            var reversed=new CprHandSample(new Pose(target.position,Quaternion.Euler(180,0,0)));
+            tick(.2f,default,reversed,false);
+            Check(flow.Step==CprStep.LowerHand,"Cambiar la postura de la palma suelta el enganche");
+            tick(.02f,default,good,false);
+            tick(.1f,good,good,false); Check(!flow.StackLatched,"No acepta manos a la misma altura");
             tick(.5f,default,default,false); Check(flow.LowerLatched,"Tolera una interrupción breve de las dos manos");
             tick(.4f,default,default,false); Check(flow.Step==CprStep.LowerHand,"Libera al perder ambas manos más allá del margen");
-            tick(1.3f,good,default,false);
-            tick(1.3f,default,upper,false);
-            Check(flow.StackLatched && flow.UsingOcclusion,"Engancha la derecha con la izquierda ya capturada y oculta");
-            tick(8,default,upper,false); Check(flow.StackLatched,"La derecha visible sostiene el enganche durante la oclusión");
-            tick(.4f,default,default,false); tick(.2f,good,upper,false);
-            Check(flow.StackLatched,"Recuperación breve sin parpadeo");
-            tick(.06f,good,away,false); Check(flow.StackLatched,"Filtra un salto de seguimiento de pocos fotogramas");
-            tick(.2f,good,upper,false); tick(.2f,good,away,false);
-            Check(flow.Step==CprStep.UpperHand && flow.LowerLatched,"Separar la derecha suelta la mano superior");
-            tick(1.3f,good,upper,false); tick(.2f,away,upper,false);
-            Check(flow.Step==CprStep.LowerHand && !flow.StackLatched,"Apartar la izquierda libera toda la postura");
-            tick(1.3f,good,default,false); tick(1.3f,good,upper,false);
-            tick(2,good,default,false); Check(flow.StackLatched && flow.UsingOcclusion,"Tolera oclusión de la derecha con izquierda visible");
+            tick(.02f,default,good,false);
+            tick(.02f,upper,default,false);
+            Check(flow.StackLatched && flow.UsingOcclusion,"La izquierda superior engancha con la derecha oculta");
+            tick(8,upper,default,false); Check(flow.StackLatched,"La izquierda visible sostiene el enganche durante la oclusión");
+            tick(8,default,default,false);
+            Check(flow.StackLatched && flow.UsingOcclusion,"La pérdida de seguimiento no desengancha dos manos ya colocadas");
+            tick(.2f,upper,good,false);
+            Check(flow.StackLatched,"Recuperación del seguimiento sin parpadeo");
+            tick(.06f,away,good,false); Check(flow.StackLatched,"Filtra un salto de seguimiento de pocos fotogramas");
+            tick(.2f,upper,good,false); tick(.2f,away,good,false);
+            Check(flow.Step==CprStep.UpperHand && flow.LowerLatched,"Separar la izquierda suelta la mano superior");
+            tick(.02f,upper,good,false); tick(.2f,upper,away,false);
+            Check(flow.Step==CprStep.LowerHand && !flow.StackLatched,"Apartar la derecha libera toda la postura");
+            tick(.02f,default,good,false); tick(.02f,upper,good,false);
+            tick(.2f,default,good,false); Check(flow.StackLatched,"Tolera pérdida breve de la izquierda superior");
             flow.Suspend();
             Check(!flow.LowerLatched && flow.Progress==0 && flow.Step==CprStep.LowerHand,"Perder foco borra el enganche");
-            tick(1.3f,good,default,false); tick(1.3f,good,upper,false);
+            tick(.02f,default,good,false); tick(.02f,upper,good,false);
             flow.BeginRelocation();
             Check(flow.Step==CprStep.MovePatient && !flow.LowerLatched,"Volver a agarrar al paciente libera las manos RCP");
             flow.Restart(); Check(flow.Step==CprStep.Safety && flow.LowerHand==-1,"Reinicio limpia la selección");
@@ -67,10 +74,17 @@ public static class CprFlowChecks
             tick(1,good,default,false); Check(flow.Step==CprStep.Breathing,"El hombro admite la izquierda");
             tick(.02f,default,default,true); tick(10.1f,default,default,false);
             Check(flow.Step==CprStep.CallForHelp && flow.ObservationTimedOut,"La observación termina al llegar a 10 segundos");
-            tick(1,default,default,false); flow.Confirm(); tick(1.3f,good,default,false);
+            tick(1,default,default,false); flow.Confirm(); tick(.02f,default,good,false);
             var controllerUpper = new CprHandSample(new Pose(top.position+Vector3.up*settings.controllerStackExtra,top.rotation),true);
-            tick(1.3f,good,controllerUpper,false);
+            tick(.02f,controllerUpper,good,false);
             Check(flow.StackLatched,"Permite el espacio adicional de los mandos");
+            for(int i=0;i<50;i++) flow.TickCompression(.02f,default,default,target,top);
+            Check(flow.StackLatched,"Durante RCP la pérdida de las dos manos conserva el enganche sin fingir movimiento");
+            var pressing=new CprHandSample(new Pose(controllerUpper.pose.position-Vector3.up*.055f,Quaternion.identity),true);
+            flow.TickCompression(.02f,pressing,default,target,top);
+            Check(flow.StackLatched,"La mano superior puede bajar durante la compresión sin soltarse");
+            for(int i=0;i<30;i++) flow.TickCompression(.02f,away,default,target,top);
+            Check(!flow.StackLatched,"Una mano superior visiblemente apartada libera la postura durante RCP");
             Debug.Log($"RCP: {Passed} verificaciones de secuencia y oclusión correctas.");
         }
         finally { UnityEngine.Object.DestroyImmediate(settings); }
@@ -81,4 +95,5 @@ public static class CprFlowChecks
         Passed++;
     }
 }
+
 

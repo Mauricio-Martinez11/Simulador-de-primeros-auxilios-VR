@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using FirstAidVR.Rcp;
 using UnityEditor;
@@ -76,17 +76,26 @@ public static class CprTrainingTools
                         var proximal=bones.First(t=>t.name=="XRHand_"+finger+"Proximal");
                         var intermediate=bones.First(t=>t.name=="XRHand_"+finger+"Intermediate");
                         var distal=bones.First(t=>t.name=="XRHand_"+finger+"Distal");
-                        proximal.rotation=Quaternion.AngleAxis(gripping?42:side=="Left"?-9:12,flexAxis)*proximal.rotation;
-                        intermediate.rotation=Quaternion.AngleAxis(gripping?62:side=="Left"?0:62,flexAxis)*intermediate.rotation;
-                        distal.rotation=Quaternion.AngleAxis(gripping?28:side=="Left"?0:28,flexAxis)*distal.rotation;
+                        if(stacked && !gripping)
+                        {
+                            // Bring the spread MCP directions together before flexing each chain.
+                            var direction=Vector3.ProjectOnPlane(intermediate.position-proximal.position,up);
+                            float spread=Vector3.SignedAngle(direction,forward,up);
+                            float fan=side=="Right"?(finger=="Index"?-17:finger=="Middle"?-5:finger=="Ring"?10:24)
+                                :(finger=="Index"?17:finger=="Middle"?5:finger=="Ring"?-10:-24);
+                            proximal.rotation=Quaternion.AngleAxis(spread+fan,up)*proximal.rotation;
+                        }
+                        proximal.rotation=Quaternion.AngleAxis(gripping?42:side=="Right"?-6:8,flexAxis)*proximal.rotation;
+                        intermediate.rotation=Quaternion.AngleAxis(gripping?62:side=="Right"?3:43,flexAxis)*intermediate.rotation;
+                        distal.rotation=Quaternion.AngleAxis(gripping?28:side=="Right"?2:18,flexAxis)*distal.rotation;
                     }
-                    if(gripping)
+                    if(gripping || stacked)
                     {
                         var thumb=bones.First(t=>t.name=="XRHand_ThumbProximal");
                         var thumbTip=bones.First(t=>t.name=="XRHand_ThumbDistal");
                         var thumbAxis=Vector3.Cross(up,thumbTip.position-thumb.position).normalized;
-                        thumb.rotation=Quaternion.AngleAxis(35,thumbAxis)*thumb.rotation;
-                        thumbTip.rotation=Quaternion.AngleAxis(30,thumbAxis)*thumbTip.rotation;
+                        thumb.rotation=Quaternion.AngleAxis(gripping?35:side=="Right"?-5:20,thumbAxis)*thumb.rotation;
+                        thumbTip.rotation=Quaternion.AngleAxis(gripping?30:side=="Right"?0:20,thumbAxis)*thumbTip.rotation;
                     }
                 }
                 var mesh = new Mesh(); skin.BakeMesh(mesh);
@@ -99,6 +108,13 @@ public static class CprTrainingTools
                 {
                     // Slightly lift the extended fingers so that the heel indicates the contact surface.
                     vertices[i].y -= contactY;
+                    if(stacked && side=="Left")
+                    {
+                        // Offset the upper fingers into the gaps of the lower hand;
+                        // keep the palm heel centered and in contact with its dorsum.
+                        vertices[i].x += .008f*Mathf.SmoothStep(0,1,Mathf.InverseLerp(.02f,.085f,vertices[i].z));
+                        vertices[i].y -= .008f;
+                    }
                     if(!stacked && !gripping) vertices[i].y += Mathf.SmoothStep(0,.024f,Mathf.InverseLerp(.05f,.14f,vertices[i].z));
                 }
                 string prefix=gripping?"Grip":stacked?"Stacked":"";

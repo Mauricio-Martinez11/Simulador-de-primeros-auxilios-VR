@@ -88,15 +88,15 @@ namespace FirstAidVR.Rcp
             {
                 shownStep = flow.Step; ResetButtons();
                 count.text = flow.Step == CprStep.Ready ? "POSTURA ENGANCHADA · SEPARA PARA SOLTAR" : $"PASO {(int)flow.Step+1:00} / 07     ·     PRÁCTICA GUIADA";
-                string[] titles = { "Comprueba el entorno", "Traslada al holograma", "Comprueba si responde", "Observa la respiración", "Pide ayuda y un DEA", "Primero, mano izquierda", "Derecha sobre izquierda", "Manos preparadas para RCP" };
+                string[] titles = { "Comprueba el entorno", "Traslada al holograma", "Comprueba si responde", "Observa la respiración", "Pide ayuda", "Primero, mano derecha", "Izquierda sobre derecha", "Manos preparadas para RCP" };
                 string[] texts = {
                     "Comprueba que el lugar sea seguro para ambos.\n\nApunta al botón y pulsa el gatillo del mando o haz pinza con la mano.",
                     "Escenario: traslado por peligro inmediato. Las manos muestran cada agarre por turnos. Acércate a una opción y cierra los dedos o haz pinza.\nArrastra el cuerpo; abre las manos en el destino verde.",
                     "Pregunta en voz alta: «¿Se encuentra bien?». Toca suavemente el hombro marcado con una mano.\n\nAcércala al holograma y mantenla un instante.",
                     "La persona no responde. Mira el pecho para comprobar si respira normalmente, durante un máximo de 10 segundos.\n\nLos jadeos aislados NO son respiración normal.",
-                    "No responde y no respira normalmente. Pide a alguien que llame al servicio local de emergencias y traiga un DEA (desfibrilador).\nSi estás solo, llama con el altavoz activado.",
-                    "Arrodíllate al costado. Coloca el TALÓN de la IZQUIERDA en el centro del pecho, sobre la mitad inferior del esternón.\nPalma abajo; mantenla hasta que la guía se ponga verde.",
-                    "La izquierda queda fijada. Coloca el talón de la DERECHA encima y entrelaza los dedos siguiendo la guía.\nBrazos rectos, hombros sobre las manos. Separa las manos para soltarlas.",
+                    "No responde y no respira normalmente. Pide a alguien que llame al servicio local de emergencias.\nSi estás solo, llama con el altavoz activado.",
+                    "Arrodíllate al costado. Acerca el TALÓN de la DERECHA al centro del pecho, sobre la mitad inferior del esternón.\nPalma abajo y dedos alineados; la guía cambia al reconocer la postura.",
+                    "La derecha queda en la guía. Acerca el talón de la IZQUIERDA encima y sigue la postura indicada.\nMantén las manos juntas durante la práctica.",
                     "La postura se mantiene aunque una mano oculte a la otra. Al separarlas, se libera el enganche y puedes volver a colocarlas.\nEsta práctica no mide compresiones, fuerza ni profundidad."
                 };
                 title.text = titles[(int)flow.Step]; instruction.text = texts[(int)flow.Step];
@@ -237,7 +237,7 @@ namespace FirstAidVR.Rcp
             else if (proximity > 0 && orientated)
                 ghosts[index].SetPositionAndRotation(Vector3.Lerp(raw.pose.position,target.position,blend), Quaternion.Slerp(raw.pose.rotation,target.rotation,blend));
             else ghosts[index].SetPositionAndRotation(target.position,target.rotation);
-            var color = aligned ? (index == 1 && stacked ? new Color(.16f,.72f,.5f) : Green) : Cyan;
+            var color = aligned ? (index == 0 && stacked ? new Color(.16f,.72f,.5f) : Green) : Cyan;
             color.a = aligned ? .94f : .36f;
             properties.SetColor("_Color",color); ghostRenderers[index].SetPropertyBlock(properties);
         }

@@ -1,0 +1,24 @@
+Registro de comprobaciones técnicas — 19 de octubre de 2026
+Proyecto: Primeros_Auxilios_VR (Unity 2022.3.62f2)
+Entorno: Unity Editor en Windows, ejecución por lotes con entradas controladas.
+
+1. CprProjectChecks.Run
+   Resultado informado por el ejecutor: 30 verificaciones de secuencia y
+   oclusión correctas. Referencias de escena y recursos verificadas.
+   Unity cerró la ejecución por lotes con código 0.
+
+2. CprStationChecks.Run
+   Resultado informado por el ejecutor: 96 comprobaciones de estación y
+   compresiones correctas. Unity cerró la ejecución por lotes con código 0.
+
+3. Captura de la escena 1_MainMenu
+   Se abrió Assets/Scenes/1_MainMenu.unity en Unity Editor y se renderizó su
+   Canvas de espacio mundial. La imagen incorporada a la guía de usuario
+   muestra el logotipo y las opciones Tutorial, Escenario Real,
+   Otros Escenarios, Ajustes y Salir.
+
+Alcance: estas verificaciones comprueban lógica y referencias dentro del
+editor. No miden la interacción física de manos, comodidad, rendimiento o
+estabilidad en el Meta Quest 3S. No había un visor conectado durante esta
+ejecución. La captura del menú corresponde a la escena del editor; no es una
+fotografía del visor ni una evaluación con participantes.

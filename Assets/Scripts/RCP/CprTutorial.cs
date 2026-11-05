@@ -41,6 +41,14 @@ namespace FirstAidVR.Rcp
         {
             if (settings == null) settings = Resources.Load<CprTrainingSettings>("RCP/TrainingSettings");
             if (patient == null) patient = GameObject.Find("Hombre_Paciente")?.transform;
+            if (settings != null && settings.stationaryPractice)
+            {
+                var station = GetComponent<CprStationController>();
+                if (station == null) station = gameObject.AddComponent<CprStationController>();
+                station.Begin(this);
+                yield break;
+            }
+            GetComponent<CprStationController>()?.DisableFixedLayout();
             if (settings == null || patient == null || settings.leftHand == null || settings.rightHand == null || settings.hologramMaterial == null)
             { Debug.LogError("RCP: faltan paciente o recursos en Resources/RCP/TrainingSettings.",this); enabled=false; yield break; }
             input = gameObject.AddComponent<CprTrackedHands>(); input.Discover();
@@ -139,7 +147,7 @@ namespace FirstAidVR.Rcp
             {
                 buttonCooldown=.85f;
                 if((before==CprStep.LowerHand && flow.Step==CprStep.UpperHand) || flow.Step==CprStep.Ready)
-                { input.Pulse(flow.Step==CprStep.UpperHand); view.PlayFeedback(flow.Step==CprStep.Ready); }
+                { input.Pulse(flow.Step==CprStep.Ready); view.PlayFeedback(flow.Step==CprStep.Ready); }
             }
             buttonCooldown-=Time.unscaledDeltaTime;
             view.Show(flow,Status(left,right,looking));
@@ -174,16 +182,17 @@ namespace FirstAidVR.Rcp
             bool touch=flow.Step==CprStep.Response;
             bool placement=flow.Step>=CprStep.LowerHand;
             bool stacking=flow.Step>=CprStep.UpperHand;
-            bool showLeft=touch || placement;
-            bool showRight=stacking;
-            Pose l=touch?shoulder:chest;
-            Pose r=upper;
+            bool showLeft=touch || stacking;
+            bool showRight=placement;
+            Pose l=touch?shoulder:upper;
+            Pose r=chest;
+            if (stacking && left.controller) l.position += chest.rotation * Vector3.up * settings.controllerStackExtra;
             // Retain a clearly visible target when no tracked hand is available.
-            view.Hand(0,l,left,showLeft,flow.LowerLatched || (flow.LeftAligned && left.valid),settings.captureRadius,stacking);
-            view.Hand(1,r,right,showRight,flow.StackLatched || (flow.RightAligned && right.valid),settings.captureRadius,stacking);
+            view.Hand(0,l,left,showLeft,flow.StackLatched || (flow.LeftAligned && left.valid),settings.upperHandCaptureRadius,stacking);
+            view.Hand(1,r,right,showRight,flow.LowerLatched || (flow.RightAligned && right.valid),settings.captureRadius,stacking);
             view.Marker(touch?shoulder:chest,touch||placement||flow.Step==CprStep.Breathing,flow.LeftAligned||flow.RightAligned);
-            input.HideTrackedVisual(true,showLeft && (flow.LowerLatched || flow.LeftAligned) && !left.controller);
-            input.HideTrackedVisual(false,showRight && (flow.StackLatched || flow.RightAligned) && !right.controller);
+            input.HideTrackedVisual(true,showLeft && (flow.StackLatched || flow.LeftAligned) && !left.controller);
+            input.HideTrackedVisual(false,showRight && (flow.LowerLatched || flow.RightAligned) && !right.controller);
         }
 
         private string Status(CprHandSample left,CprHandSample right,bool looking)
@@ -203,13 +212,12 @@ namespace FirstAidVR.Rcp
             if(flow.Step==CprStep.CallForHelp) return flow.ObservationTimedOut ? "Han pasado 10 s. En este caso: no respira normalmente." : "Caso simulado: no respira normalmente. Solicita ayuda.";
             if(flow.Step==CprStep.Ready) return flow.UsingOcclusion
                 ? "Manos enganchadas · postura conservada durante la oclusión. Separa para soltar."
-                : "Manos enganchadas · izquierda abajo, derecha encima. Separa para soltar.";
+                : "Manos enganchadas · derecha abajo, izquierda encima. Separa para soltar.";
             if(!left.valid && !right.valid) return "Muestra las manos a las cámaras del visor o activa los mandos.";
-            if(flow.Progress>0) return $"Posición correcta · mantén las manos… {flow.Progress:P0}";
             if(flow.Step==CprStep.Response) return "Toca suavemente el hombro indicado. Puedes usar cualquiera de las manos.";
             if(left.controller||right.controller) return "Modo mandos · orientación aproximada; deja espacio entre ellos.";
-            if(flow.Step==CprStep.UpperHand) return "Izquierda fijada · coloca la DERECHA encima, siguiendo la guía.";
-            return "Coloca primero la IZQUIERDA: palma abajo y dedos siguiendo la guía.";
+            if(flow.Step==CprStep.UpperHand) return "Derecha colocada · acerca la IZQUIERDA encima, siguiendo la guía.";
+            return "Acerca primero la DERECHA: palma abajo y dedos siguiendo la guía.";
         }
 
         private void OnPatientGrabbed()
