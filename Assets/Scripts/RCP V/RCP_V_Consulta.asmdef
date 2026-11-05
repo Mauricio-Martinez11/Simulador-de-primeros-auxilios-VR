@@ -1,0 +1,16 @@
+{
+  "name": "RCP_V_Consulta",
+  "rootNamespace": "",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "RCP_V_CONSULTA_HABILITADA"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
