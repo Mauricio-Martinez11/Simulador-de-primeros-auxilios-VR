@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 
 namespace FirstAidVR.Rcp
 {
-    /// <summary>Tracked grip targets apply bounded forces to a fully connected dynamic ragdoll.</summary>
+    /// <summary>Los objetivos de agarre con seguimiento aplican fuerzas limitadas a un ragdoll dinámico completamente conectado.</summary>
     public sealed class CprPatientTransport : MonoBehaviour
     {
         public UnityEvent onGrab = new UnityEvent();
@@ -66,7 +66,7 @@ namespace FirstAidVR.Rcp
             floorHeight=Physics.Raycast(body.position+Vector3.up*2,Vector3.down,out var floor,4,~0,QueryTriggerInteraction.Ignore)
                 ? floor.point.y : initial.position.y-.16f;
             properties=new MaterialPropertyBlock();
-            // Bake before physics changes the skeleton so the target remains the intended lying pose.
+            // Hornear antes de que la física cambie el esqueleto para que el objetivo conserve la pose acostada prevista.
             BuildHologram();
             Ragdoll=gameObject.AddComponent<CprPatientRagdoll>();
             if(!Ragdoll.Initialize(settings,patient)) { enabled=false; return; }
@@ -118,14 +118,14 @@ namespace FirstAidVR.Rcp
                     }
                     if(!usable)
                     {
-                        // Keep the hand representation attached while allowing the whole body to settle.
+                        // Mantener unida la representación de la mano mientras el cuerpo completo se estabiliza.
                         Ragdoll.ReleaseGrip(hand); previousValid[hand]=false; continue;
                     }
                     var point=GripPoint(sample);
                     strainTime[hand]=Vector3.Distance(point,Guides.Contact(heldSites[hand]))>settings.grabMaxReach?strainTime[hand]+dt:0;
                     if(strainTime[hand]>.15f || (!previousValid[hand] && Vector3.Distance(point,Guides.Contact(heldSites[hand]))>settings.grabMaxReach))
                     {
-                        // A recovered hand far from the patient must re-grab. Never store a permanent offset.
+                        // Una mano recuperada lejos del paciente debe volver a agarrarlo. Nunca guardar un desplazamiento permanente.
                         Release(hand); trackingRelease=true; continue;
                     }
                     if(!previousValid[hand] || Vector3.Distance(point,previous[hand])>.3f)

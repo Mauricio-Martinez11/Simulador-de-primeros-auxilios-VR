@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.XR;
 namespace FirstAidVR.Rcp
 {
-    // Coalesce Meta/OpenXR notifications and wait for the updated eye anchors.
-    // This is a one-shot placement, never a panel that follows ordinary head movement.
+    // Agrupar las notificaciones de Meta/OpenXR y esperar los anclajes oculares actualizados.
+    // Es una colocación única, nunca un panel que siga el movimiento habitual de la cabeza.
     public sealed class CprWorldRecenter : MonoBehaviour
     {
         public static event Action Recentered;

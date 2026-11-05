@@ -17,8 +17,8 @@ public static class CprPatientClothingTools
         var source = skin.sharedMesh;
         var mesh = UnityEngine.Object.Instantiate(source);
         mesh.name = "Paciente vestido · piel visible";
-        // Keep the patient's eyelids closed in the optimized mesh used at runtime. The scene
-        // already sets Eye_Blink_L/R to 100, but Prepare swaps in this mesh without blendshapes.
+        // Mantener cerrados los párpados del paciente en la malla optimizada usada en ejecución. La escena
+        // ya fija Eye_Blink_L/R en 100, pero Prepare sustituye la malla por esta, que no tiene blendshapes.
         if (Enumerable.Range(0, source.blendShapeCount).Any(i => Mathf.Abs(skin.GetBlendShapeWeight(i)) > .001f))
             throw new InvalidOperationException("Hornea primero las expresiones activas del paciente.");
         BakeClosedEyelids(source, mesh);
@@ -27,7 +27,7 @@ public static class CprPatientClothingTools
         int neckIndex = Array.FindIndex(bones, b => b.name == "CC_Base_NeckTwist01");
         int headIndex = Array.FindIndex(bones, b => b.name == "CC_Base_Head");
         if (neckIndex < 0 || headIndex < 0) throw new InvalidOperationException("No se encuentra la base del cuello del paciente.");
-        // Bind-pose coordinates match the mesh even when the scene instance is lying down.
+        // Las coordenadas de la pose de enlace coinciden con la malla aunque la instancia de la escena esté acostada.
         var neck = source.bindposes[neckIndex].inverse.MultiplyPoint3x4(Vector3.zero);
         var head = source.bindposes[headIndex].inverse.MultiplyPoint3x4(Vector3.zero);
         var up = (head - neck).normalized;
@@ -37,8 +37,8 @@ public static class CprPatientClothingTools
             string material = skin.sharedMaterials[slot].name;
             if (material == "Std_Skin_Leg") mesh.SetTriangles(Array.Empty<int>(), slot, false);
             if (material != "Std_Skin_Body") continue;
-            // Keep only skin at the neck. A broad height cutoff also retains triangles
-            // at the shoulders, where they can poke through the shirt when arms move.
+            // Conservar solo la piel del cuello. Un corte amplio por altura también conservaría triángulos
+            // en los hombros, donde podrían atravesar la camiseta al mover los brazos.
             var triangles = source.GetTriangles(slot);
             var visible = new List<int>();
             for (int i = 0; i < triangles.Length; i += 3)

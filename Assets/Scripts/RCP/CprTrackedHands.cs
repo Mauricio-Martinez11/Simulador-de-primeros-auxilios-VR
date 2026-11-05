@@ -38,9 +38,9 @@ namespace FirstAidVR.Rcp
             {
                 if (hand == null || !hand.isActiveAndEnabled || hand.Handedness != side) continue;
 
-                // Meta XR Simulator drives its keyboard hand through a SyntheticHand. Prefer a
-                // measured hand on device, then use the synthetic source only in the editor so
-                // the simulator's grab gesture can drive the same transport code.
+                // Meta XR Simulator controla su mano mediante teclado a través de SyntheticHand. Priorizar una
+                // mano medida en el dispositivo y usar la fuente sintética solo en el editor para que
+                // el gesto de agarre del simulador controle el mismo código de transporte.
                 if (hand is SyntheticHand)
                 {
                     if (Application.isEditor && syntheticFallback == null) syntheticFallback = hand;
@@ -61,7 +61,7 @@ namespace FirstAidVR.Rcp
                 return simulatedSample;
             }
 
-            // A grip pose is only an approximation of the anatomical heel of the hand.
+            // Una pose de agarre solo aproxima el talón anatómico de la mano.
             var device = InputDevices.GetDeviceAtXRNode(left ? XRNode.LeftHand : XRNode.RightHand);
             if (device.isValid && (device.characteristics & InputDeviceCharacteristics.Controller) != 0
                 && device.TryGetFeatureValue(CommonUsages.isTracked, out bool tracked) && tracked
@@ -84,11 +84,11 @@ namespace FirstAidVR.Rcp
         private static bool TryReadHand(Hand hand, bool left, bool allowSynthetic, out CprHandSample sample)
         {
             sample = default;
-            // SyntheticHand can be marked disconnected/low-confidence while the simulator is
-            // still providing valid joint poses, so those two flags are relaxed only for it.
-            // Ordinary Hand components also wrap synthetic sources: HandSphereMap supplies
-            // a permanently connected prefab, and LastKnownGoodHand can freeze an old pose.
-            // Testing the component type or IsTrackedDataValid alone accepts both.
+            // SyntheticHand puede figurar como desconectada o con baja confianza aunque el simulador
+            // siga proporcionando poses articulares válidas; por eso solo para ella se flexibilizan esos dos indicadores.
+            // Los componentes Hand comunes también pueden envolver fuentes sintéticas: HandSphereMap proporciona
+            // un prefab siempre conectado y LastKnownGoodHand puede conservar una pose antigua.
+            // Comprobar solo el tipo de componente o IsTrackedDataValid aceptaría ambos casos.
             if (!allowSynthetic && !IsCurrentTrackingData(hand.GetData())) return false;
             if (!hand.GetRootPose(out var wrist)
                 || !hand.GetJointPose(HandJointId.HandMiddle1, out var middle)
@@ -122,7 +122,7 @@ namespace FirstAidVR.Rcp
 
         private static float ReadGrip(Hand hand, Vector3 wrist, out bool valid)
         {
-            // A pinch OR a closed hand can hold an arm. Missing fingers are not an open-hand gesture.
+            // Una pinza o una mano cerrada pueden sujetar un brazo. La falta de dedos detectados no equivale a una mano abierta.
             float curl = 0; int count = 0;
             AddCurl(hand, HandFinger.Middle, HandJointId.HandMiddle1, HandJointId.HandMiddleTip, wrist, ref curl, ref count);
             AddCurl(hand, HandFinger.Ring, HandJointId.HandRing1, HandJointId.HandRingTip, wrist, ref curl, ref count);
@@ -133,8 +133,8 @@ namespace FirstAidVR.Rcp
 
         public static float CombineGrip(float curlSum, int fingerCount, float pinch, bool pinchValid, out bool valid)
         {
-            // A partially occluded fist can still have one reliable curled finger. An observed
-            // open pinch is valid input too: it must re-arm the hand after tracking was lost.
+            // Un puño parcialmente oculto aún puede tener un dedo doblado detectado de forma fiable. Una pinza abierta
+            // observada también es una entrada válida: debe rearmar la mano después de perder el seguimiento.
             valid = fingerCount > 0 || pinchValid;
             return Mathf.Clamp01(Mathf.Max(fingerCount > 0 ? curlSum / fingerCount : 0, pinchValid ? pinch : 0));
         }

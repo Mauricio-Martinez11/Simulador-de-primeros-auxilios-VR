@@ -164,8 +164,8 @@ namespace FirstAidVR.Rcp
         private bool CanGrab(CprHandSample h) => h.valid && h.gripValid && h.grip>.55f && Vector3.Distance(h.pose.position,phone.position)<.15f;
         public static Pose PhonePose(CprHandSample hand,bool left)
         {
-            // Sample axes: +Y dorsum, +Z fingers. The back of the phone rests
-            // against the palm; its long axis follows the fingers, screen outward.
+            // Ejes de muestra: +Y dorso, +Z dedos. La parte trasera del teléfono descansa
+            // contra la palma; su eje largo sigue los dedos y la pantalla mira hacia afuera.
             var offset=new Vector3(left?-.008f:.008f,-.024f,.055f);
             return new Pose(hand.pose.position+hand.pose.rotation*offset,
                 hand.pose.rotation*Quaternion.LookRotation(Vector3.up,Vector3.forward));

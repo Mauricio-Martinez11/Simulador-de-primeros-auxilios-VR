@@ -3,7 +3,7 @@ namespace FirstAidVR.Rcp
 {
     public static class CprAudioOutput
     {
-        // The current view owns the listener, including direct entry into the menu/tutorial.
+        // La vista actual controla el oyente, incluso al entrar directamente al menú o al tutorial.
         public static void Bind(Camera camera)
         {
             if(camera==null) return;

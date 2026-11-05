@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace FirstAidVR.Rcp
 {
-    // No queue: only the current, still relevant problem can be spoken.
+    // Sin cola: solo puede anunciarse el problema actual que todavía sea pertinente.
     public sealed class CprCorrectionVoice
     {
         public const float QuietSeconds=8, RepeatSeconds=22;
@@ -30,7 +30,7 @@ namespace FirstAidVR.Rcp
             if(s.Placement.ReleasePending) return null;
             if(!s.Detector.HasTracking) return "Lost";
             if(!s.Detector.LocationCorrect) return "Away";
-            // Completed-cycle metrics take precedence over phase guidance.
+            // Las métricas de ciclos completados tienen prioridad sobre las indicaciones de fase.
             if(s.Events.Count>0)
             {
                 var e=s.Events[s.Events.Count-1];

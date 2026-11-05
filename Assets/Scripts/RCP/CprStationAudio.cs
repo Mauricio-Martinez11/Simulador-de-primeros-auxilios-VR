@@ -2,7 +2,7 @@
 
 namespace FirstAidVR.Rcp
 {
-    // A time reference only: hand depth and compression count cannot change its phase.
+    // Solo una referencia temporal: la profundidad de las manos y el número de compresiones no pueden cambiar su fase.
     public sealed class CprBeatClock
     {
         public const float GreenStart=.8f;
@@ -17,7 +17,7 @@ namespace FirstAidVR.Rcp
             if(!started) { started=true; elapsed=Phase=0; return false; }
             float previous=elapsed;
             elapsed+=Mathf.Max(0,dt);
-            // Sound exactly when the moving marker enters green, once per interval.
+            // Emitir el sonido justo cuando el marcador móvil entra en la zona verde, una vez por intervalo.
             bool pulse=Mathf.FloorToInt(elapsed/interval+1-GreenStart)
                 > Mathf.FloorToInt(previous/interval+1-GreenStart);
             elapsed%=interval;
@@ -51,7 +51,7 @@ namespace FirstAidVR.Rcp
             for(int i=0;i<data.Length;i++) data[i]=Mathf.Sin(2*Mathf.PI*720*i/rate)*Mathf.Sin(Mathf.PI*i/data.Length)*.28f;
             pulse=AudioClip.Create("Pulso de referencia",data.Length,1,rate,false); pulse.SetData(data,0);
         }
-        // Called before the session consumes input. It owns explanation/confirmation gates.
+        // Se llama antes de que la sesión procese la entrada. Controla los bloqueos de explicación y confirmación.
         public void Prepare(CprPracticeSession session,float dt,bool focus)
         {
             if(activeSession!=session)
@@ -60,7 +60,7 @@ namespace FirstAidVR.Rcp
             {
                 if(session.Closed && lastStep>=0 && !narrator.Complete)
                 {
-                    // Finish a pending spoken correction before the automatic results narration.
+                    // Terminar una corrección hablada pendiente antes de la narración automática de resultados.
                     narrator.Tick(dt,focus); session.SetPresentationGate(false,true); return;
                 }
                 lastStep=(int)session.Step; instructionDone=confirmationStarted=startAnnounced=false;
@@ -86,14 +86,14 @@ namespace FirstAidVR.Rcp
             bool transitionReady=confirmationStarted && narrator.Complete;
             session.SetPresentationGate(!instructionDone,!transitionReady);
         }
-        // Called after evaluation so pulse sounds and the visible phase share the same frame.
+        // Se llama después de la evaluación para que los sonidos del pulso y la fase visible coincidan en el mismo fotograma.
         public void Tick(CprPracticeSession session,float dt,bool focus)
         {
             if(session.Step==CprPracticeStep.Compressions && !session.Explaining && !session.Paused && focus)
             {
                 if(session.Pacing.PulseVersion!=lastPulse && !Muted) effects.PlayOneShot(pulse);
                 BeatPhase=session.Pacing.Phase;
-                // A separate voice never owns the explanation gate, detector or beat clock.
+                // Una voz independiente nunca controla el bloqueo de explicación, el detector ni el reloj de latidos.
                 string key=correctionVoice.Tick(dt,CprCorrectionVoice.Candidate(session),
                     corrections.Speaking || !narrator.Complete,!Muted);
                 if(key!=null) corrections.Play(key);

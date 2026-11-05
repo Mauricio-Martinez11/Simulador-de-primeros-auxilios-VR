@@ -9,13 +9,13 @@ namespace FirstAidVR.Rcp
     {
         public bool valid, controller, gripValid, reliable;
         public float grip;
-        // Measured pose only: origin = heel, +Y = dorsum, +Z = fingers.
+        // Solo pose medida: origen = talón de la mano, +Y = dorso, +Z = dedos.
         public Pose pose;
         public CprHandSample(Pose pose, bool controller = false, float grip = 0, bool gripValid = false)
         { this.pose = pose; this.controller = controller; this.grip = grip; this.gripValid = gripValid; valid = reliable = true; }
     }
 
-    /// <summary>Visual poses never feed detection. Occlusion is an explicit latch state.</summary>
+    /// <summary>Las poses visuales nunca alimentan la detección. La oclusión es un estado de retención explícito.</summary>
     public sealed class CprFlow
     {
         public CprStep Step { get; private set; }
@@ -29,7 +29,7 @@ namespace FirstAidVR.Rcp
         public bool UsingOcclusion { get; private set; }
         public CprReleaseReason LastReleaseReason { get; private set; }
         public bool ReleasePending => topAway > 0 || lowerAway > 0 || separationEvidence > 0;
-        // Compression tolerances are deliberately wider than initial placement tolerances.
+        // Las tolerancias de compresión son deliberadamente más amplias que las de colocación inicial.
         public const float CompressionReleaseHold = .18f;
         private float separationEvidence;
         private float held, elapsed, observed, observationClock, lowerAway, topAway, lowerLost, bothLost;
@@ -38,7 +38,7 @@ namespace FirstAidVR.Rcp
 
         public CprFlow(CprTrainingSettings settings) { this.settings = settings; Restart(); }
         public void Restart() { LowerHand = -1; ObservationTimedOut = false; Enter(CprStep.Safety); }
-        // The fixed station reuses only the measured placement/occlusion state machine.
+        // La estación fija reutiliza solo la máquina de estados de colocación y oclusión medidas.
         public void StartPlacement() { LowerHand = -1; LastReleaseReason = CprReleaseReason.None; Enter(CprStep.LowerHand); }
         public void ClearReleaseEvidence() { lowerAway = topAway = separationEvidence = 0; }
         public void Suspend()
@@ -120,8 +120,8 @@ namespace FirstAidVR.Rcp
                 separated = delta.magnitude > Mathf.Max(.14f, settings.handSeparation)
                     + (left.controller ? settings.controllerStackExtra : 0);
             }
-            // Occluded fingers can flip palm orientation or swap apparent stack order.
-            // Neither is evidence that the user deliberately separated their hands.
+            // Los dedos ocultos pueden invertir la orientación de la palma o el orden aparente de las manos superpuestas.
+            // Ninguno de estos cambios indica que el usuario haya separado las manos intencionalmente.
             topAway = seeLeft && ClearlyAway(left, upper, normal) ? topAway + dt : 0;
             lowerAway = seeRight && ClearlyAway(right, lower, normal) ? lowerAway + dt : 0;
             separationEvidence = separated ? separationEvidence + dt : 0;
@@ -149,7 +149,7 @@ namespace FirstAidVR.Rcp
             bool baseOk = Matches(right, lower, settings.releaseRadius, settings.palmAngle + 15, settings.fingerAngle + 10);
             bool topOk = Matches(left, topTarget, locked ? settings.releaseRadius : settings.upperHandCaptureRadius,
                 settings.palmAngle + (locked ? 15 : 10), settings.fingerAngle + 10);
-            // Reject hands side by side or at the same height within overlapping capture spheres.
+            // Rechazar manos una al lado de la otra o a la misma altura dentro de esferas de captura superpuestas.
             var stackDelta = left.pose.position - (right.valid ? right.pose.position : lower.position);
             var normal = lower.rotation * Vector3.up;
             float height = Vector3.Dot(stackDelta, normal);
@@ -164,7 +164,7 @@ namespace FirstAidVR.Rcp
             topAway = left.valid && (!topOk || separated) ? topAway + dt : 0;
             if ((!locked && bothLost >= settings.bothHandsLostGrace) || lowerAway >= settings.separationHold)
             { ReleaseLower(); return; }
-            // The visible upper hand supports the captured lower hand during overlap.
+            // La mano superior visible sostiene la mano inferior detectada durante la superposición.
             if (!locked && !right.valid && !topOk && lowerLost >= settings.lowerHandOcclusionGrace)
             { ReleaseLower(); return; }
             if (locked && topAway >= settings.separationHold)

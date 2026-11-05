@@ -7,7 +7,7 @@ namespace FirstAidVR.Rcp
     public enum CprFeedbackKind { Instruction, Success, Correction, Tracking }
     public struct CprPracticeObservation { public bool safetyLeft, safetyRight, helpRequested; }
 
-    /// <summary>Measured attempt state, consumed by presentation and the persistent report.</summary>
+    /// <summary>Estado medido del intento, utilizado por la presentación y el informe persistente.</summary>
     public sealed class CprPracticeSession
     {
         public readonly CprTrainingSettings Settings;
@@ -100,12 +100,12 @@ namespace FirstAidVR.Rcp
 
         public void Primary()
         {
-            // Deliberately no progression through UI clicks. Only observed actions advance the lesson.
+            // Los clics en la interfaz no avanzan la lección deliberadamente. Solo avanzan las acciones observadas.
         }
 
         public void Alternative()
         {
-            // Retained for compatibility with serialized actions from the previous station.
+            // Se conserva por compatibilidad con las acciones serializadas de la estación anterior.
         }
 
         public void Tick(float dt, CprHandSample left, CprHandSample right, Pose shoulder, Pose chest, Pose upper,
@@ -126,8 +126,8 @@ namespace FirstAidVR.Rcp
             clockWasInterrupted = false;
             if(Explaining || StepPassed && transitionBlocked)
             {
-                // Keep validating the established stack while listening, without scoring.
-                // A pupil may relax or move their hands during a long explanation.
+                // Seguir validando la superposición de manos mientras se escucha, sin asignar puntaje.
+                // El estudiante puede relajarse o mover las manos durante una explicación larga.
                 if(Placement.StackLatched && (Step==CprPracticeStep.Placement || Step==CprPracticeStep.Compressions))
                 {
                     Placement.TickCompression(Mathf.Min(dt,.12f),left,right,chest,upper);
@@ -207,7 +207,7 @@ namespace FirstAidVR.Rcp
                 Placement.TickCompression(dt,left,right,chest,upper);
                 if (!Placement.StackLatched)
                 {
-                    // Recover inside this step: changing steps restarts narration and its input gate.
+                    // Recuperarse dentro de este paso: cambiar de paso reinicia la narración y su bloqueo de entrada.
                     if (wasStacked && measurementStarted)
                     {
                         if (Placement.LastReleaseReason == CprReleaseReason.HandsSeparated)
@@ -229,8 +229,8 @@ namespace FirstAidVR.Rcp
                     return;
                 }
                 PracticeSeconds += Mathf.Min(dt, .12f);
-                // Never score a suspected jump while release evidence is still being gathered.
-                // Head direction/position is not a CPR hand measurement.
+                // Nunca penalizar un salto sospechoso mientras aún se reúne evidencia de separación.
+                // La dirección o posición de la cabeza no es una medición de las manos durante la RCP.
                 Detector.Tick(dt, TotalSeconds, Placement.ReleasePending ? default : left,
                     Placement.ReleasePending ? default : right, chest, true, true);
                 if (Closed) return;

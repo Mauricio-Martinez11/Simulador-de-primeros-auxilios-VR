@@ -136,9 +136,9 @@ namespace FirstAidVR.Rcp
 
         private static void BuildRayInteraction(Canvas canvas)
         {
-            // Same ISDK pipeline as 1_MainMenu: existing hand/controller rays target this
-            // bounded surface, then PointableCanvas forwards their selection to Unity Buttons.
-            // This surface is invisible and remains attached when the panel moves or turns.
+            // La misma ruta de ISDK que en 1_MainMenu: los rayos existentes de manos o controles apuntan a esta
+            // superficie delimitada y PointableCanvas transmite su selección a los botones de Unity.
+            // Esta superficie es invisible y permanece unida cuando el panel se mueve o gira.
             if (FindObjectOfType<PointableCanvasModule>() == null)
             {
                 var events = EventSystem.current;
@@ -189,7 +189,7 @@ namespace FirstAidVR.Rcp
             if (desktopMouse && Input.GetMouseButtonDown(0))
                 return Inside(primary, gaze) ? 0 : Inside(secondary, gaze) ? 1 : -1;
 #endif
-            // Keep near-touch as an alternative. Looking at a button never activates it.
+            // Mantener el toque cercano como alternativa. Mirar un botón nunca lo activa.
             int touch = Touches(primary,left,right) ? 0 : Touches(secondary,left,right) ? 1 : -1;
             int current = touch;
             if(current!=pressedButton) pressedButton=-1;
@@ -229,7 +229,7 @@ namespace FirstAidVR.Rcp
             var stackMesh = index == 0 ? settings.stackedLeftHand : settings.stackedRightHand;
             ghosts[index].GetComponent<MeshFilter>().sharedMesh = stacked && stackMesh != null ? stackMesh
                 : index == 0 ? settings.leftHand : settings.rightHand;
-            // Only a visual attraction, maximum displacement bounded by the capture radius.
+            // Solo una atracción visual; el radio de captura limita el desplazamiento máximo.
             float proximity = raw.valid ? 1-Mathf.Clamp01(Vector3.Distance(raw.pose.position,target.position)/radius) : 0;
             bool orientated = raw.valid && Vector3.Angle(raw.pose.rotation*Vector3.up,target.rotation*Vector3.up) < 65;
             float blend = aligned ? 1 : Mathf.SmoothStep(0,1,proximity);

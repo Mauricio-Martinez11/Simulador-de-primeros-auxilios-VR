@@ -4,7 +4,7 @@ using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 
-// Also guards a normal Build/Build And Run so the Android fix cannot silently lose its asset.
+// También protege una compilación normal con Build/Build And Run para que la corrección de Android no pierda su recurso sin aviso.
 public sealed class CprQuestBuild : IPreprocessBuildWithReport
 {
     public int callbackOrder => 0;

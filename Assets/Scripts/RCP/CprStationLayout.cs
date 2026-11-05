@@ -190,8 +190,8 @@ namespace FirstAidVR.Rcp
             bool freshDepth=s.Closed || measuring && s.Detector.DisplayFresh;
             if(!hasDepth) travel=0;
             depthText.text=hasDepth?$"{travel*100:0.0}":"—";
-            // Keep a visible zero/reference cursor even before the first sample and during recovery.
-            // Retain the last measured position on tracking loss; never animate an invented compression.
+            // Mantener visible un cursor de referencia en cero incluso antes de la primera muestra y durante la recuperación.
+            // Conservar la última posición medida si se pierde el seguimiento; nunca animar una compresión inventada.
             depthNeedle.gameObject.SetActive(true);
             depthNeedle.anchoredPosition=new Vector2(-64,-224+243*Mathf.Clamp01(travel/.08f));
             depthNeedle.Find("Marca visible").GetComponent<Graphic>().color=hasDepth && freshDepth?White:Muted;

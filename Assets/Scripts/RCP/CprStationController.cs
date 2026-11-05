@@ -65,8 +65,8 @@ namespace FirstAidVR.Rcp
             var shoulderPosition=manualShoulder!=null?manualShoulder.position:shoulderBone.position+config.shoulderOffset;
             if(stationRoot!=null && view!=null)
             {
-                // Keep the authored patient-to-screen layout. Only anatomical references
-                // are recalculated when the patient moves within the saved station.
+                // Conservar la distribución diseñada entre el paciente y la pantalla. Solo se recalculan
+                // las referencias anatómicas cuando el paciente se mueve dentro de la estación guardada.
                 chestReference.SetPositionAndRotation(chestPosition,rotation);
                 shoulderReference.SetPositionAndRotation(shoulderPosition,shoulderOverride!=null?shoulderOverride.transform.rotation:rotation);
                 originalHeight=stationRoot.position.y;
@@ -94,7 +94,7 @@ namespace FirstAidVR.Rcp
         {
             if(tutorial.settings==null || tutorial.patient==null)
             { Debug.LogError("RCP: falta la configuración o el paciente de la estación.",this); yield break; }
-            // Freeze all scoring thresholds for this attempt. Inspector edits cannot alter its denominators.
+            // Fijar todos los umbrales de puntuación para este intento. Los cambios en el Inspector no pueden alterar sus denominadores.
             settings=Instantiate(tutorial.settings);
             BuildLayout(settings,tutorial.patient,tutorial.chestAnchor,tutorial.shoulderAnchor);
             patientView.PrepareContact(tutorial.patient,Chest,settings);
@@ -211,7 +211,7 @@ namespace FirstAidVR.Rcp
             patientView.SetShoulderMotion(responseOffset);
             shoulder.position+=responseOffset;
             view.Guides(session,chest,shoulder,upper,upperController,patientView.ContactPose(chest,visualTravel));
-            // Contact animation never feeds the measurement reference or the detector.
+            // La animación de contacto nunca alimenta la referencia de medición ni el detector.
             bool hide=focus && !session.Paused && !session.Explaining && (latched || session.Step==CprPracticeStep.Placement && session.Placement.LowerLatched);
             bool responseGrip=focus && !session.Paused && session.ResponseTouching;
             bool phoneGrip=focus && !session.Paused && session.Step==CprPracticeStep.Help && !session.StepPassed && scenarioActions.ShowingPhoneHand;
@@ -317,7 +317,7 @@ namespace FirstAidVR.Rcp
             catch(System.Exception e)
             {
                 session.ReportFailed(e.Message);
-                // Do not retry every frame on a full or inaccessible device.
+                // No reintentar en cada fotograma si el dispositivo está lleno o inaccesible.
                 if(session.Closed) savedClosedAttempt=session.AttemptId;
                 Debug.LogError("No se pudo guardar el registro RCP: "+e.Message);
             }

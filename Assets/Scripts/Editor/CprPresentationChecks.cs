@@ -57,8 +57,8 @@ public static class CprPresentationChecks
                 gazeDidNothing &= view.UpdateButtons(new Ray(camera.transform.position, primary.transform.position-camera.transform.position), .02f, .8f) == -1;
             Check(gazeDidNothing, "Mirar el botón durante cuatro segundos no confirma");
 
-            // Drive the ISDK event path (not Button.onClick.Invoke), with independent pointer ids
-            // for the left/right rays. Unity's EventSystem performs raycasts and clicks itself.
+            // Usar la ruta de eventos de ISDK (no Button.onClick.Invoke), con identificadores de puntero
+            // independientes para los rayos izquierdo y derecho. EventSystem de Unity realiza los raycasts y clics.
             int pointer = 100;
             foreach (var button in new[] { primary, secondary, primary, secondary })
             {
@@ -79,7 +79,7 @@ public static class CprPresentationChecks
                 ray.PublishPointerEvent(new PointerEvent(pointer++, PointerEventType.Unhover, pose));
                 yield return null;
             }
-            // The native module has to be reused if a second panel is made in the scene.
+            // El módulo nativo debe reutilizarse si se crea un segundo panel en la escena.
             var second = new GameObject("Otro panel");
             second.AddComponent<CprTutorialView>().Build(settings, camera);
             yield return null;

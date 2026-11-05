@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 namespace FirstAidVR.Rcp
 {
     /// <summary>
-    /// Unit-scale physics rig independent of the FBX hierarchy. Only rotations are transferred
-    /// to limb bones; the root follows the dynamic hip. No bone translation or scaling can stretch the skin.
+    /// Rig físico a escala unitaria independiente de la jerarquía FBX. Solo se transfieren rotaciones
+    /// a los huesos de las extremidades; la raíz sigue la cadera dinámica. Ninguna traslación ni escala de huesos puede estirar la piel.
     /// </summary>
     public sealed class CprPatientRagdoll : MonoBehaviour
     {
@@ -126,22 +126,22 @@ namespace FirstAidVR.Rcp
                 var upperAxis = (forearm.bone.position-arm.bone.position).normalized;
                 var forearmAxis = (hand.bone.position-forearm.bone.position).normalized;
                 var elbowAxis = Vector3.Cross(forearmAxis, patient.forward).normalized;
-                // Shoulder X follows the humerus: limit axial twist independently of its swing.
-                // A shared patient-wide axis mixed bending with twist and wrung the upper-arm skin.
+                // El eje X del hombro sigue el húmero: limitar la torsión axial independientemente de su balanceo.
+                // Un eje compartido para todo el paciente mezclaba flexión y torsión y retorcía la piel del brazo.
                 Limits(arm, upperAxis, -35, 35, 100, 75, patient.forward);
-                // A small extension margin absorbs solver error on impact before hyperextension.
+                // Un pequeño margen de extensión absorbe el error del solucionador ante un impacto antes de la hiperextensión.
                 Limits(forearm, elbowAxis, 5, 115, 0, 0, forearmAxis);
-                // Conservative passive wrist range for this interaction, not maximum clinical ROM.
-                // Keep a stable flexion hinge: an unconstrained sideways wrist swing can collapse
-                // under a floor impact. Forearm/shoulder motion carries changes of direction.
+                // Rango pasivo conservador de la muñeca para esta interacción, no el máximo rango de movimiento clínico.
+                // Mantener una bisagra de flexión estable: el movimiento lateral sin restricciones de la muñeca puede colapsar
+                // ante un impacto contra el suelo. El antebrazo y el hombro permiten los cambios de dirección.
                 Limits(hand, elbowAxis, -20, 25, 0, 0, forearmAxis);
                 PassiveResistance(arm, 3, 3, 10);
                 PassiveResistance(forearm, 5, 2.5f, 10);
                 forearm.joint.targetRotation=Quaternion.AngleAxis(-8,Vector3.right);
                 PassiveResistance(hand, 20, 3, 6);
                 hand.joint.projectionAngle=forearm.joint.projectionAngle=1;
-                // A small distal collider has very low rotational inertia. Increase it without
-                // changing hand/body weight so a floor impulse cannot spin the wrist in one step.
+                // Un colisionador distal pequeño tiene una inercia rotacional muy baja. Aumentarla sin
+                // cambiar el peso de la mano ni del cuerpo evita que un impulso del suelo gire la muñeca de golpe.
                 hand.body.ResetInertiaTensor();
                 hand.body.inertiaTensor*=4;
                 hand.body.solverIterations=64;
@@ -159,13 +159,13 @@ namespace FirstAidVR.Rcp
             foreach (var part in parts)
             {
                 if (part.parent == null) continue;
-                // Upper arms must collide with the chest even though the shoulder connects them.
-                // Other adjacent volumes overlap at their hinge; every non-adjacent pair collides.
+                // Los brazos deben colisionar con el pecho aunque estén unidos por los hombros.
+                // Otros volúmenes adyacentes se superponen en sus bisagras; todos los pares no adyacentes colisionan.
                 bool shoulder = part.name.EndsWith("Upperarm", StringComparison.Ordinal);
                 part.joint.enableCollision = shoulder;
                 Physics.IgnoreCollision(part.collider, part.parent.collider, !shoulder);
             }
-            // Retarget in skeletal hierarchy order, independent of left/right construction order.
+            // Reasignar en el orden de la jerarquía ósea, independientemente del orden de construcción izquierdo o derecho.
             parts.Sort((a,b) => Array.IndexOf(skeleton,a.bone).CompareTo(Array.IndexOf(skeleton,b.bone)));
             initialized = true;
             return true;
@@ -232,9 +232,9 @@ namespace FirstAidVR.Rcp
             joint.angularXMotion = ConfigurableJointMotion.Limited;
             joint.angularYMotion = twist == 0 ? ConfigurableJointMotion.Locked : ConfigurableJointMotion.Limited;
             joint.angularZMotion = swing == 0 ? ConfigurableJointMotion.Locked : ConfigurableJointMotion.Limited;
-            // Our ranges describe the child's anatomical rotation relative to its parent.
-            // ConfigurableJoint's X limit frame measures the opposite relative rotation.
-            // Without this conversion an elbow/knee allowed its large bend backwards.
+            // Nuestros rangos describen la rotación anatómica del hueso hijo respecto del padre.
+            // El marco de límite X de ConfigurableJoint mide la rotación relativa opuesta.
+            // Sin esta conversión, un codo o una rodilla permitiría una gran flexión hacia atrás.
             joint.lowAngularXLimit = new SoftJointLimit { limit = -high, contactDistance = 4 };
             joint.highAngularXLimit = new SoftJointLimit { limit = -low, contactDistance = 4 };
             joint.angularYLimit = new SoftJointLimit { limit = twist, contactDistance = 4 };
@@ -246,8 +246,8 @@ namespace FirstAidVR.Rcp
 
         private static void PassiveResistance(Part part, float spring, float damping, float maxTorque)
         {
-            // Resist flopping around the neutral relative pose through the physics solver.
-            // XYAndZ also works for the elbow, whose other two angular axes are locked.
+            // Resistir la oscilación alrededor de la pose relativa neutra mediante el solucionador físico.
+            // XYAndZ también funciona para el codo, cuyos otros dos ejes angulares están bloqueados.
             var joint=part.joint;
             joint.enablePreprocessing=true;
             joint.rotationDriveMode=RotationDriveMode.XYAndZ;
@@ -276,7 +276,7 @@ namespace FirstAidVR.Rcp
             ReleaseGrip(0); ReleaseGrip(1);
             if(snapFrom!=null)
             {
-                // A cancelled placement resumes from a coherent, fixed-length skeletal pose.
+                // Una colocación cancelada se reanuda desde una pose ósea coherente y de longitud fija.
                 SyncVisuals();
                 foreach(var part in parts) { part.body.position=part.bone.position; part.body.rotation=part.bone.rotation; }
                 snapFrom=null;
@@ -315,7 +315,7 @@ namespace FirstAidVR.Rcp
         {
             var grip = grips[hand];
             if (grip == null) return;
-            // Destroy is deferred in Play Mode; zero the drives immediately before removing the joint.
+            // Destroy se difiere en modo Play; poner a cero los motores inmediatamente antes de quitar la articulación.
             grip.joint.xDrive = grip.joint.yDrive = grip.joint.zDrive = new JointDrive();
             Dispose(grip.joint); Dispose(grip.handle.gameObject); grips[hand]=null;
         }
@@ -325,8 +325,8 @@ namespace FirstAidVR.Rcp
             foreach (var grip in grips)
             {
                 if (grip == null) continue;
-                // A solver drive couples the hand to the entire articulated mass. A capped force
-                // applied only to the forearm used to leave the patient far behind when lifted.
+                // Un motor del solucionador vincula la mano con toda la masa articulada. Una fuerza limitada
+                // aplicada solo al antebrazo solía dejar al paciente muy atrás al levantarlo.
                 grip.filtered = Vector3.MoveTowards(grip.filtered, grip.target, settings.grabTargetSpeed * dt);
                 grip.handle.MovePosition(grip.filtered);
             }
@@ -338,7 +338,7 @@ namespace FirstAidVR.Rcp
         public void SyncVisuals()
         {
             if (!initialized) return;
-            // Restore bind offsets before transferring rotations. Even a stressed solver cannot elongate a bone.
+            // Restaurar los desplazamientos de enlace antes de transferir las rotaciones. Ni siquiera un solucionador bajo tensión puede alargar un hueso.
             for (int i = 1; i < skeleton.Length; i++)
             { skeleton[i].localPosition=localPositions[i]; skeleton[i].localScale=localScales[i]; skeleton[i].localRotation=localRotations[i]; }
             var hip=FindPart("Hip");
@@ -350,10 +350,10 @@ namespace FirstAidVR.Rcp
 
         private void ApplyRelaxedHands()
         {
-            // Finger bones are deliberately not physics bodies: keeping their bind offsets and
-            // adding this small local curl gives a passive hand without introducing 20 extra
-            // joints that could snag on clothing or the floor. The FBX finger chains use local Y
-            // as their length axis, so local X is the anatomical curl axis for both sides.
+            // Los huesos de los dedos no son cuerpos físicos deliberadamente: conservar sus desplazamientos de enlace y
+            // añadir esta pequeña flexión local produce una mano pasiva sin introducir 20 articulaciones adicionales
+            // que podrían engancharse en la ropa o el suelo. Las cadenas de dedos del FBX usan el eje Y local
+            // como eje longitudinal; por eso el eje X local es el eje de flexión anatómica en ambos lados.
             foreach (var side in new[] { "L_", "R_" })
             {
                 foreach (var finger in new[] { "Index", "Mid", "Ring", "Pinky" })
@@ -379,9 +379,9 @@ namespace FirstAidVR.Rcp
 
         private void SuppressSkinUnderClothes()
         {
-            // Use a mesh baked in the editor: the FBX is not CPU-readable in an Android player.
-            // Never remove materials to hide skin; null material slots render the error shader
-            // (magenta) on Quest. The baked mesh retains all material slots and bone weights.
+            // Usar una malla horneada en el editor: la CPU no puede leer el FBX en una aplicación Android.
+            // Nunca quitar materiales para ocultar la piel; los espacios de material vacíos muestran el shader de error
+            // (magenta) en Quest. La malla horneada conserva todos los materiales y pesos de los huesos.
             bool hasShirt = false, hasJeans = false;
             foreach (var skin in skins)
             {

@@ -19,7 +19,7 @@ namespace FirstAidVR.Rcp
         }
     }
 
-    /// <summary>Measured palm travel only. Ghosts and the animated chest never enter this detector.</summary>
+    /// <summary>Solo recorrido medido de la palma. Las manos fantasma y el pecho animado nunca intervienen en este detector.</summary>
     public sealed class CprCompressionDetector
     {
         private enum Phase { Rest, Down, Up }
@@ -57,7 +57,7 @@ namespace FirstAidVR.Rcp
 
         public bool Calibrate(CprHandSample left, CprHandSample right, Pose chest)
         {
-            // Both actual hand poses must have been observed at rest; never calibrate a hidden ghost.
+            // Ambas poses reales de las manos deben haberse observado en reposo; nunca calibrar una mano fantasma oculta.
             if (!left.valid || !right.valid) return false;
             var normal = chest.rotation * Vector3.up;
             rest[0] = Vector3.Dot(left.pose.position - chest.position, normal);
@@ -68,7 +68,7 @@ namespace FirstAidVR.Rcp
             return true;
         }
 
-        // Sequential calibration accommodates the real lower-hand occlusion during stacking.
+        // La calibración secuencial admite la oclusión real de la mano inferior al superponer las manos.
         public void CaptureRest(int hand, CprHandSample sample, Pose chest)
         {
             if (!sample.valid || hand < 0 || hand > 1) return;
@@ -92,10 +92,10 @@ namespace FirstAidVR.Rcp
             {
                 if (!left.reliable) left = default;
                 if (!right.reliable) right = default;
-                // Placement owns separation detection. The visible top hand drives travel;
-                // the occluded lower hand must not invalidate a sound measurement.
-                // Keep a continuously observed source. Brief alternation between hands
-                // must not reset the cycle at every camera frame.
+                // La colocación controla la detección de separación. La mano superior visible determina el recorrido;
+                // la oclusión de la mano inferior no debe invalidar una medición fiable.
+                // Mantener una fuente observada continuamente. La alternancia breve entre manos
+                // no debe reiniciar el ciclo en cada fotograma de la cámara.
                 if (source==1 && right.valid) left=default;
                 else if (left.valid) right = default;
             }
@@ -123,7 +123,7 @@ namespace FirstAidVR.Rcp
                 Suspend(); HasTracking = true; State = CprCaptureState.OutsideZone;
                 return;
             }
-            // The upper left hand stays visible when Quest loses the lower right hand.
+            // La mano izquierda superior permanece visible cuando Quest pierde la mano derecha inferior.
             int nextSource = left.valid ? 0 : 1;
             var sample = nextSource == 0 ? left : right;
             float depth = rest[nextSource] - Vector3.Dot(sample.pose.position - chest.position, chest.rotation * Vector3.up);
@@ -140,8 +140,8 @@ namespace FirstAidVR.Rcp
             if (depth < -.06f || depth > .16f)
             { Suspend(); HasTracking = true; State = CprCaptureState.OutsideZone; return; }
             previousDepth = depth; haveSample = true; Depth = Mathf.Max(0, depth);
-            // Display uses measured samples even while cycle detection is re-arming.
-            // A short low-pass filter reduces visual jitter without changing cycle peaks.
+            // La visualización usa muestras medidas incluso mientras se rearma la detección de ciclos.
+            // Un filtro breve de paso bajo reduce las fluctuaciones visuales sin alterar los picos de los ciclos.
             float alpha=1-Mathf.Exp(-dt/.025f);
             displayDepth=displayInitialized?Mathf.Lerp(displayDepth,Depth,alpha):Depth;
             displayInitialized=true; displayAge=0;
@@ -150,9 +150,9 @@ namespace FirstAidVR.Rcp
                 returnHeld = Mathf.Abs(depth) <= settings.compressionReturn ? returnHeld + dt : 0;
                 State = CprCaptureState.Recovering;
                 RecoveryReason="Vuelve al reposo para reconocer la siguiente bajada";
-                // Placement may have sampled a hand before it settled. Recover the baseline
-                // only after an observed upward excursion and a small downward reversal.
-                // A stationary hand held down cannot recalibrate or manufacture a cycle.
+                // La colocación puede haber medido una mano antes de que se estabilizara. Recuperar la referencia
+                // solo después de observar un ascenso y una pequeña inversión descendente.
+                // Una mano inmóvil mantenida abajo no puede recalibrar ni generar un ciclo artificial.
                 if(!recoveryObserved) { recoveryLastDepth=recoveryBottom=recoveryTop=depth; recoveryObserved=true; }
                 bool turningDown=depth>recoveryLastDepth+.0005f; recoveryLastDepth=depth;
                 recoveryBottom=Mathf.Max(recoveryBottom,depth);
@@ -165,8 +165,8 @@ namespace FirstAidVR.Rcp
                     ready=true; phase=Phase.Rest; continuityStart=time;
                     RecoveryReason="Referencia recuperada";
                 }
-                // Two or more measured rest samples are enough. Requiring 160 ms
-                // continuously at rest can prevent arming during uninterrupted CPR.
+                // Bastan dos o más muestras medidas en reposo. Exigir 160 ms
+                // continuos en reposo puede impedir el rearme durante una RCP ininterrumpida.
                 if (returnHeld >= .04f) { ready = true; continuityStart = time; State = CprCaptureState.Ready; }
                 if(!ready) return;
             }
@@ -202,7 +202,7 @@ namespace FirstAidVR.Rcp
 
         private bool InZone(CprHandSample hand, Pose chest, bool stackEstablished)
         {
-            if (!hand.valid) return true; // Only the visible, already calibrated source is evaluated.
+            if (!hand.valid) return true; // Solo se evalúa la fuente visible que ya está calibrada.
             var offset = hand.pose.position - chest.position;
             return Vector3.ProjectOnPlane(offset, chest.rotation * Vector3.up).magnitude <= settings.compressionZoneRadius
                 && (stackEstablished || (Vector3.Angle(hand.pose.rotation * Vector3.up, chest.rotation * Vector3.up) <= settings.palmAngle + 15
@@ -211,7 +211,7 @@ namespace FirstAidVR.Rcp
 
         private void Emit(float time, bool fullReturn)
         {
-            // Reject very short spikes. Fast deliberate cycles still count and receive rhythm feedback.
+            // Rechazar picos muy breves. Los ciclos rápidos intencionales siguen contando y reciben información sobre el ritmo.
             if (time - cycleStart < .16f || (lastEvent >= 0 && time - lastEvent < .25f)) return;
             if (lastEvent >= 0 && time - lastEvent > settings.practicePauseSeconds) times.Clear();
             times.Add(time);

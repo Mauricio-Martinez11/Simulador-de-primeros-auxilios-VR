@@ -54,7 +54,7 @@ namespace FirstAidVR.Rcp
         {
             Mixed.SetSupport(patient,settings,true);
             RefreshAlignmentGuides();
-            // The participant moves the real object. No automatic object recognition or transform handles.
+            // El participante mueve el objeto real. No hay reconocimiento automático del objeto ni controles de transformación.
             panel.Present("Align","Confirmar alineación","Continuar sin apoyo");
             while(!panel.FinishedSpeaking || panel.Selection<0)
             {
@@ -67,8 +67,8 @@ namespace FirstAidVR.Rcp
         }
         private void RefreshAlignmentGuides()
         {
-            // The patient can be offset from the station origin. Use the same shirt
-            // contact surface as practice, also after height changes or recentering.
+            // El paciente puede estar desplazado del origen de la estación. Usar la misma superficie
+            // de contacto de la camiseta que en la práctica, incluso tras ajustar la altura o recentrar.
             view.AlignmentGuides(alignmentContact());
         }
         private void CreatePanel()

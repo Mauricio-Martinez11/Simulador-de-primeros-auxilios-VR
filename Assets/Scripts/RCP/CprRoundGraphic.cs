@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace FirstAidVR.Rcp
 {
-    /// <summary>Resolution-independent rounded glass cards; uses the standard mobile UI material.</summary>
+    /// <summary>Tarjetas translúcidas redondeadas independientes de la resolución; usan el material estándar de interfaz móvil.</summary>
     [AddComponentMenu("")]
     [RequireComponent(typeof(CanvasRenderer))]
     public sealed class CprRoundGraphic : MaskableGraphic

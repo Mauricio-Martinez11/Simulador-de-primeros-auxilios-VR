@@ -17,7 +17,7 @@ namespace FirstAidVR.Rcp
         {
             var b=s.Breakdown;
             int placementCount=s.LocationErrors+s.HandSeparationErrors;
-            // Share a saturated placement cap proportionally; never claim both types lost the full cap.
+            // Repartir proporcionalmente el límite alcanzado de penalización por colocación; no atribuir la pérdida total a ambos tipos.
             float placementUnit=placementCount>0?(20*b.completion-b.placement)/placementCount:0;
             float travelUnit=s.Count>0?25f*b.completion/s.Count:0;
             float rhythmUnit=s.RateSamples>0?25f*b.completion/s.RateSamples:0;

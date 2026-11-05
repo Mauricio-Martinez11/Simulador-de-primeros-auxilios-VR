@@ -62,7 +62,7 @@ public static class CprStationPlayChecks
         var controller=UnityEngine.Object.FindObjectOfType<CprStationController>();
         for(int i=0;i<120 && controller.Session==null;i++) yield return null;
         Check(controller.Session!=null,"inicialización del coordinador");
-        controller.enabled=false; // Deterministic test input now owns this isolated instance.
+        controller.enabled=false; // La entrada de prueba determinista controla ahora esta instancia aislada.
         var view=controller.View; var camera=Camera.main;
         var settings=Resources.Load<CprTrainingSettings>("RCP/TrainingSettings");
         var breathingPanel=controller.GetComponent<CprBreathingPanel>();
@@ -157,7 +157,7 @@ public static class CprStationPlayChecks
             ray.PublishPointerEvent(new PointerEvent(pointer++,PointerEventType.Unhover,pose)); yield return null;
         }
         view.ToggleOptions();
-        // Test Slider through the same ISDK pointer pipeline, including drag events.
+        // Probar Slider mediante la misma ruta de punteros de ISDK, incluidos los eventos de arrastre.
         var slider=view.HeightSlider; var sliderRay=slider.GetComponentInParent<Canvas>().GetComponentInChildren<RayInteractable>();
         view.Show(controller.Session,controller.Height,0,false,true);
         var sliderRect=(RectTransform)slider.transform;
@@ -179,9 +179,9 @@ public static class CprStationPlayChecks
         view.Show(controller.Session,0,0,false,true); view.BlockInputs();
         Check(view.Panels.SelectMany(c=>c.GetComponentsInChildren<Button>()).All(b=>!b.interactable),"controles bloqueados durante transición");
 
-        // All screens must fit their fixed rectangles, including an error-heavy results panel.
+        // Todas las pantallas deben caber en sus rectángulos fijos, incluido un panel de resultados con muchos errores.
         var states=new[]{new CprPracticeSession(settings), CprStationChecks.Prepared(settings,false)};
-        // Test the exact scene actions: gaze evidence and gripping/carrying the virtual phone.
+        // Probar las acciones exactas de la escena: evidencia de mirada y agarre/transporte del teléfono virtual.
         var actionSession=CprStationChecks.AtStep(settings,CprPracticeStep.Help);
         var actions=controller.Actions;
         var head=new Pose(controller.Chest.position+new Vector3(0,.7f,-.7f),Quaternion.identity);

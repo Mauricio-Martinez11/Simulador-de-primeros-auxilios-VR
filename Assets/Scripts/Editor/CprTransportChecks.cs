@@ -239,7 +239,7 @@ public static class CprTransportChecks
             Check(!f.mover.IsHeld && rag.IsSimulating,"Soltar desde arriba deja caer el cuerpo completo");
             f.CheckLengths();
             if(step==.02f) Capture(f,"Ragdoll-caida");
-            // Force each arm across the torso and let collision contacts oppose the push.
+            // Empujar cada brazo a través del torso y dejar que los contactos de colisión se opongan al empuje.
             foreach(var side in new[]{"L_","R_"})
             {
                 f.Reset(); f.Step(.4f);
@@ -276,8 +276,8 @@ public static class CprTransportChecks
     private static void Capture(Fixture f,string name)
     {
         if(!Application.isBatchMode || SystemInfo.graphicsDeviceType==UnityEngine.Rendering.GraphicsDeviceType.Null) return;
-        // These simulations all execute in one editor frame. Bake the current skin explicitly;
-        // a second Camera.Render can otherwise reuse skinning buffers from the earlier snapshot.
+        // Todas estas simulaciones se ejecutan en un fotograma del editor. Hornear explícitamente la malla deformada actual;
+        // de lo contrario, un segundo Camera.Render puede reutilizar los búferes de deformación de la captura anterior.
         var bakedObjects=new List<GameObject>(); var bakedMeshes=new List<Mesh>();
         var skins=f.patient.GetComponentsInChildren<SkinnedMeshRenderer>().Where(s=>s.enabled).ToArray();
         var report=new List<string>();

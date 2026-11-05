@@ -107,7 +107,7 @@ public static class CprV2PlaybackChecks
         Check(mixed.Failed && !mixed.Active,"sin visor no simula un passthrough exitoso");
         UnityEngine.Object.Destroy(intro.gameObject); UnityEngine.Object.Destroy(camera.gameObject); UnityEngine.Object.Destroy(host);
         yield return null;
-        // Validate the real scene route separately from the isolated audio fixture.
+        // Validar la ruta de la escena real por separado de la prueba aislada de audio.
         typeof(CprFamiliarization).GetProperty("Completed").GetSetMethod(true).Invoke(null,new object[]{true});
         SceneManager.sceneLoaded+=DesktopScene;
         SceneManager.LoadScene("1_MainMenu");

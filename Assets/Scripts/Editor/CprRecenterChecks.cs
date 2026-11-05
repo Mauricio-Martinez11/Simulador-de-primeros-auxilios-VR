@@ -92,7 +92,7 @@ public static class CprRecenterChecks
         var menu=new GameObject("Menú oculto"); var menuCanvas=new GameObject("Canvas").AddComponent<Canvas>(); menuCanvas.transform.SetParent(menu.transform,false);
         menu.AddComponent<CanvasBillboard>(); menu.SetActive(false);
         head.SetPositionAndRotation(Vector3.one,Quaternion.Euler(0,180,0)); menu.SetActive(true);
-        // Edit-mode batch checks do not dispatch MonoBehaviour.OnEnable automatically.
+        // Las comprobaciones por lotes en modo de edición no invocan MonoBehaviour.OnEnable automáticamente.
         typeof(CanvasBillboard).GetMethod("OnEnable",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(menu.GetComponent<CanvasBillboard>(),null);
         Check(Vector3.Distance(menuCanvas.transform.position,head.position+CprWorldRecenter.Forward(head)*3)<.001f,"menú que reaparece se coloca delante");
         UnityEngine.Object.DestroyImmediate(menu); UnityEngine.Object.DestroyImmediate(introObject);

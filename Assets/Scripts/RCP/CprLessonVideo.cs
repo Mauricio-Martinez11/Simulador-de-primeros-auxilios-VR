@@ -27,8 +27,8 @@ namespace FirstAidVR.Rcp
         public void Show(CprPracticeStep step,bool playing)
         {
             int index=Mathf.Clamp((int)step-1,0,5); allowed=playing;
-            // The original placement illustration has the opposite hand order.
-            // Mirror both video and fallback together to match right below / left above.
+            // La ilustración original de colocación muestra las manos en el orden contrario.
+            // Reflejar tanto el video como la imagen de reserva para mostrar la derecha abajo y la izquierda arriba.
             screen.uvRect=index==4?new Rect(1,0,-1,1):new Rect(0,0,1,1);
             if(current!=index)
             {

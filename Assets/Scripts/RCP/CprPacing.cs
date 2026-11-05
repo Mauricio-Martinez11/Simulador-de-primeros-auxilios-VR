@@ -11,7 +11,7 @@ namespace FirstAidVR.Rcp
         public string result;
     }
 
-    /// <summary>The single clock shared by the audio, moving marker and press feedback.</summary>
+    /// <summary>El único reloj compartido por el audio, el marcador móvil y la respuesta a las compresiones.</summary>
     public sealed class CprPacing
     {
         public const float EarlyTolerance=.055f, LateTolerance=.12f;

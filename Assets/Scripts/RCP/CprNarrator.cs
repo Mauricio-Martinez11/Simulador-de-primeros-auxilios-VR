@@ -2,8 +2,8 @@
 
 namespace FirstAidVR.Rcp
 {
-    // Uses actual playback completion, not an estimated duration to advance a voiced lesson.
-    // The fallback clock is used only if an asset failed to load, and remains visible as text.
+    // Usa el fin real de la reproducción para avanzar la lección narrada, no una duración estimada.
+    // El reloj de reserva solo se usa si un recurso no se cargó y permanece visible como texto.
     public sealed class CprNarrator : MonoBehaviour
     {
         private AudioSource source;

@@ -32,8 +32,8 @@ namespace FirstAidVR.Rcp
             missing=0;
             if(Vector3.Distance(hand.pose.position,shoulder.position)>.14f) { Reset(); return; }
             if(!measure || Completed) { Animation=0; return; }
-            // Two bounded illustrative movements after contact. No precise return gesture
-            // is required, so the learner cannot get stuck waiting at the shoulder.
+            // Dos movimientos ilustrativos limitados después del contacto. No se exige un gesto
+            // preciso de retorno, para que el estudiante no quede esperando junto al hombro.
             elapsed=Mathf.Min(2*MovementDuration,elapsed+dt);
             Movements=Mathf.Min(2,Mathf.FloorToInt((elapsed+.00001f)/MovementDuration));
             Progress=elapsed/(2*MovementDuration);

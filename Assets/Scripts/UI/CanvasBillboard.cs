@@ -2,7 +2,7 @@
 using UnityEngine;
 using FirstAidVR.Rcp;
 
-// Kept under the serialized component name. The menu is now a fixed world-space panel.
+// Se conserva el nombre serializado del componente. El menú ahora es un panel fijo en el espacio del mundo.
 public class CanvasBillboard : MonoBehaviour
 {
     void OnEnable() { CprWorldRecenter.Recentered+=PlaceInFront; PlaceInFront(); }

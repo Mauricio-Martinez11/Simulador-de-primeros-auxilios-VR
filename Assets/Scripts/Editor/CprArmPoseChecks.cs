@@ -2,7 +2,7 @@ using System;
 using FirstAidVR.Rcp;
 using UnityEngine;
 
-/// <summary>Measures actual joint motion under torque, lift, sideways pull and a drop.</summary>
+/// <summary>Mide el movimiento real de las articulaciones ante torsión, elevación, tracción lateral y caída.</summary>
 public static class CprArmPoseChecks
 {
     public static int Passed { get; private set; }
@@ -32,7 +32,7 @@ public static class CprArmPoseChecks
                 rag.ResetPose(new Pose(f.initial.position+Vector3.up*1.5f,f.initial.rotation));
                 var part=rag.FindPart(side+name);
                 phase=$"torsión {side+name} eje {axis} signo {sign}";
-                // Anchor only the ancestors in this isolated limit test. Descendants remain free.
+                // Fijar solo los ancestros en esta prueba aislada de límites. Los descendientes quedan libres.
                 foreach(var candidate in rag.Parts)
                 {
                     var ancestor=candidate;
@@ -50,7 +50,7 @@ public static class CprArmPoseChecks
                 Check(name+" conserva sus límites bajo torsión");
             }
         }
-        // Start manipulation with a clean rig; the limit fixture intentionally pins ancestors.
+        // Iniciar la manipulación con un rig limpio; el dispositivo de prueba fija los ancestros intencionalmente.
         using(var f=new CprTransportChecks.Fixture())
         {
             f.dt=step; var rag=f.mover.Ragdoll;
@@ -62,7 +62,7 @@ public static class CprArmPoseChecks
                 var startL=left.pose.position; var startR=right.pose.position;
                 for(float t=0;t<5;t+=step)
                 {
-                    // Lift, then pull sideways while supported by the same forearm.
+                    // Elevar y luego tirar hacia un lado mientras se sostiene el mismo antebrazo.
                     var move=new Vector3(Mathf.Sin(t)*.25f,Mathf.Min(2,t*.65f),Mathf.Max(0,t-3)*.25f);
                     left.pose.position=startL+move; right.pose.position=startR+move;
                     phase=$"levantar zona {site} t={t:F2}";

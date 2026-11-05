@@ -23,13 +23,13 @@ namespace FirstAidVR.Rcp
         public const float MaximumVisualTravel = .014f;
         public static float VisualTravel(float measuredTravel) => Mathf.Clamp(measuredTravel * .18f, 0, MaximumVisualTravel);
 
-        // Bake only during setup. Runtime contact follows cached surface samples, not a per-frame mesh bake.
+        // Hornear solo durante la preparación. El contacto en ejecución sigue muestras de superficie guardadas, no una malla horneada por fotograma.
         public void PrepareContact(Transform patient, Pose chest, CprTrainingSettings settings)
         {
             contactHeights.Clear();
             var normal = chest.rotation * Vector3.up;
             var mesh = new Mesh();
-            // Anchor the heel of the lower palm, not the lowest curled fingertip of either hand.
+            // Fijar el talón de la palma inferior, no la punta más baja de un dedo doblado de cualquiera de las manos.
             var footprint=new HashSet<Vector3>();
             if(settings.stackedRightHand!=null)
                 foreach(var vertex in settings.stackedRightHand.vertices)
@@ -45,7 +45,7 @@ namespace FirstAidVR.Rcp
                     skin.BakeMesh(mesh);
                     var rest = mesh.vertices;
                     var triangles = mesh.triangles;
-                    // BakeMesh applies renderer scale; TransformPoint would apply it twice.
+                    // BakeMesh aplica la escala del renderizador; TransformPoint la aplicaría dos veces.
                     for (int i=0;i<rest.Length;i++) rest[i]=skin.transform.position+skin.transform.rotation*rest[i];
                     SetCompression(MaximumVisualTravel / .18f, normal);
                     skin.BakeMesh(mesh);
@@ -71,7 +71,7 @@ namespace FirstAidVR.Rcp
                             downEnvelope=Mathf.Max(downEnvelope,compressed-point.y);
                         }
                     }
-                    // Interpolating the maxima is a conservative envelope of every sampled vertex.
+                    // Interpolar los valores máximos crea una envolvente conservadora de todos los vértices muestreados.
                     if(!float.IsNegativeInfinity(restEnvelope)) contactHeights.Add(new Vector2(restEnvelope,downEnvelope));
                 }
             }
@@ -82,8 +82,8 @@ namespace FirstAidVR.Rcp
         {
             var pose = new Pose(guide.position, guide.rotation);
             if (hand == null) return pose;
-            // Keep the edited pose and mesh. Only remove the gap along world up;
-            // the saved guide may no longer touch after the patient was moved.
+            // Conservar la pose y la malla editadas. Eliminar solo el espacio en la dirección vertical del mundo;
+            // la guía guardada podría dejar de hacer contacto después de mover al paciente.
             var normal = Vector3.up;
             float correction = float.NegativeInfinity;
             var probe = new GameObject("Contacto de mano manual").AddComponent<MeshCollider>();
@@ -149,8 +149,8 @@ namespace FirstAidVR.Rcp
                         }
                     }
                 }
-                // Fit a single tangent plane to the palm. Preserve the hand mesh and finger
-                // proportions; fitting individual vertices would crease the skin.
+                // Ajustar un único plano tangente a la palma. Conservar la malla de la mano y las proporciones
+                // de los dedos; ajustar cada vértice por separado produciría pliegues en la piel.
                 float n=0,sx=0,sz=0,sy=0,sxx=0,szz=0,sxz=0,sxy=0,szy=0;
                 for(int i=0;i<handVertices.Length;i++)
                 {
@@ -173,8 +173,8 @@ namespace FirstAidVR.Rcp
                     if(Mathf.Abs(handVertices[i].x)<.035f && Mathf.Abs(handVertices[i].z)<.045f)
                         contact=Mathf.Max(contact,(n>0?sy/n:0)+ax*(fitted[i].x-(n>0?sx/n:0))+az*(fitted[i].z-(n>0?sz/n:0))-fitted[i].y);
                 }
-                // Resolve contact against the actual curved surface after tilting, not the
-                // approximated tangent plane (which can leave a visible air gap).
+                // Resolver el contacto con la superficie curva real después de inclinar, no con el
+                // plano tangente aproximado (que podría dejar un espacio visible).
                 contact=float.NegativeInfinity;
                 var clearance=new float[fitted.Length];
                 for(int i=0;i<clearance.Length;i++) clearance[i]=float.NegativeInfinity;
@@ -196,8 +196,8 @@ namespace FirstAidVR.Rcp
                     }
                 }
                 if(float.IsNegativeInfinity(contact)) contact=0;
-                // Smooth clearance envelope: keep fingers outside the shirt without lifting
-                // the entire palm. Nearby vertices receive the same continuous correction.
+                // Envolvente suave de separación: mantener los dedos fuera de la camiseta sin elevar
+                // toda la palma. Los vértices cercanos reciben la misma corrección continua.
                 var corrected=(Vector3[])fitted.Clone();
                 for(int i=0;i<fitted.Length;i++)
                 {
@@ -246,7 +246,7 @@ namespace FirstAidVR.Rcp
 
         public Pose ContactPose(Pose chest,float measuredTravel)
         {
-            // If the shirt cannot be sampled, retain the rest surface rather than sink into the torso.
+            // Si no se puede muestrear la camiseta, conservar la superficie en reposo para evitar hundirse en el torso.
             float height=0;
             if(contactHeights.Count>0)
             {
@@ -299,7 +299,7 @@ namespace FirstAidVR.Rcp
 
         public void SetCompression(float measuredTravel, Vector3 normal)
         {
-            // Small illustrative chest response, shared by skin and clothing. Never used as measurement.
+            // Pequeña respuesta ilustrativa del pecho, compartida por la piel y la ropa. Nunca se usa como medición.
             if (spine == null) return;
             spine.localPosition = spineRest - spine.parent.InverseTransformVector(normal * VisualTravel(measuredTravel));
         }

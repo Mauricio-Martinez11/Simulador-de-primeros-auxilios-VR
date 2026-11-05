@@ -15,8 +15,8 @@ public static class CprHandInputChecks
     public static void Run()
     {
         passed = 0;
-        // HandSphereMap and LastKnownGoodHand can set all these flags to true,
-        // despite providing a reference pose instead of a current measurement.
+        // HandSphereMap y LastKnownGoodHand pueden marcar todos estos indicadores como verdaderos,
+        // aunque proporcionen una pose de referencia en lugar de una medición actual.
         var data = new HandDataAsset {
             IsDataValid = true, IsConnected = true, IsTracked = true,
             IsHighConfidence = true, RootPoseOrigin = PoseOrigin.SyntheticPose
@@ -38,8 +38,8 @@ public static class CprHandInputChecks
         Check(!CprTrackedHands.IsCurrentTrackingData(data), "reject missing pose origin");
         Check(!CprTrackedHands.IsCurrentTrackingData(null), "reject absent data");
 
-        // Confirm the problematic candidates actually exist in the shipped rig.
-        // Keep an interactive user's current scene open.
+        // Confirmar que los candidatos problemáticos existen en el rig distribuido.
+        // Mantener abierta la escena actual del usuario durante la interacción.
         if (Application.isBatchMode)
         {
             EditorSceneManager.OpenScene("Assets/Scenes/Boobstrap.unity");

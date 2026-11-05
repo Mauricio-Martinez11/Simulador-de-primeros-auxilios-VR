@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace FirstAidVR.Rcp
 {
-    // A two-beat illustration chosen for the case narrative, not a diagnostic ECG.
+    // Ilustración de dos latidos elegida para el relato del caso, no un ECG diagnóstico.
     public static class CprCaseMonitor
     {
         public const float FirstBeat = .35f, SecondBeat = 1.25f, FlatAt = 2.25f;
@@ -15,7 +15,7 @@ namespace FirstAidVR.Rcp
         private static float BeatShape(float t)
         {
             if (t < -.10f || t > .34f) return 0;
-            // Deliberately schematic, without voltage, frequency or diagnostic axes.
+            // Es deliberadamente esquemática, sin ejes de voltaje, frecuencia ni diagnóstico.
             return .15f * Triangle(t + .065f, .035f) - .2f * Triangle(t + .016f, .018f)
                 + Triangle(t - .018f, .024f) - .38f * Triangle(t - .055f, .028f)
                 + .22f * Triangle(t - .22f, .10f);

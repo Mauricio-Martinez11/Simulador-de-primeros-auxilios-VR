@@ -25,8 +25,8 @@ public static class RagdollValidationRunner
         };
     }
 
-    // PhysicsScene.Simulate and SceneManager.CreateScene(LocalPhysicsMode) require Play Mode.
-    // The menu checks remain available in the editor; this entry point runs them in a real physics scene.
+    // PhysicsScene.Simulate y SceneManager.CreateScene(LocalPhysicsMode) requieren el modo Play.
+    // Las comprobaciones del menú siguen disponibles en el editor; este punto de entrada las ejecuta en una escena física real.
     public static void BakeAndRun() { CprPatientClothingTools.Bake(); Run(); }
 
     public static void Run()

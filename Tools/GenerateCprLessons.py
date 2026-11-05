@@ -26,7 +26,7 @@ def poses(source):
     for row in range(2):
         for column in range(2):
             cell = atlas.crop((column*w//2, row*h//2, (column+1)*w//2, (row+1)*h//2))
-            # Preserve anatomy: fit the full frame, never stretch or crop a hand.
+            # Conservar la anatomía: ajustar el fotograma completo sin estirar ni recortar una mano.
             result.append(ImageOps.pad(cell, SIZE, method=Image.Resampling.LANCZOS, color='white'))
     return result
 
@@ -37,9 +37,9 @@ def smooth(value):
 
 
 def compression_frame(rest, time):
-    # A small local mesh deformation moves the shoulders, straight arms and
-    # chest together. The head, legs and resting arms of the patient stay still.
-    # Single-source deformation avoids ghost hands from optical interpolation.
+    # Una pequeña deformación local de la malla mueve juntos los hombros, los brazos
+    # extendidos y el pecho. La cabeza, las piernas y los brazos en reposo permanecen inmóviles.
+    # La deformación de una sola fuente evita manos fantasma por interpolación óptica.
     amount = .5*(1-math.cos(time*math.tau*110/60))*22
     width, height = SIZE
     def source(x, y):
@@ -60,8 +60,8 @@ def encode(name, args):
     frames = poses(args.source / (name+'.png'))
     compression = name == '06_Compresiones'
     duration = 6
-    # Clean held poses for larger gestures; no frame blending that invents extra
-    # fingers. The compression example moves continuously at the reference rate.
+    # Poses sostenidas nítidas para gestos amplios, sin mezcla de fotogramas que invente
+    # dedos adicionales. El ejemplo de compresión se mueve continuamente al ritmo de referencia.
     sequence = [0,1,2,3]
     if name == '02_Respuesta': sequence = [2,0,1,2,3,1]
     if name == '04_Ayuda': sequence = [0,1,2,3,3,1]

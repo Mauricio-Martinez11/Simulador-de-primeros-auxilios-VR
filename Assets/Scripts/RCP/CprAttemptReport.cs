@@ -26,7 +26,7 @@ namespace FirstAidVR.Rcp
             b.evaluable = s.Count >= 3 && s.RateSamples > 0 && s.LocationSeconds > 0;
             b.completion = Mathf.Clamp01((float)s.Count / s.Settings.practiceCompressions);
             b.preparation = 20 * Mathf.Clamp01(Mathf.Min(s.StepsDone, 5) / 5f) * Mathf.Clamp01(1 - s.SequenceErrors * .1f);
-            // One continuous incident counts once. Technical loss never enters these counters.
+            // Un incidente continuo se cuenta una sola vez. Las pérdidas técnicas nunca entran en estos contadores.
             b.placement = Mathf.Max(0, 20 - 2 * (s.LocationErrors + s.HandSeparationErrors)) * b.completion;
             b.travel = s.Count > 0 ? 25f * s.DepthHits / s.Count * b.completion : 0;
             b.rhythm = s.RateSamples > 0 ? 25f * s.RateHits / s.RateSamples * b.completion : 0;

@@ -69,7 +69,7 @@ namespace FirstAidVR.Rcp
 
         private void Add(int group,int hand,CprPatientRagdoll.Part part,Vector3 palmContact,Quaternion rotation)
         {
-            // Input measures the palm heel; the force is attached at the centre of the gripped surface.
+            // La entrada mide el talón de la palma; la fuerza se aplica en el centro de la superficie agarrada.
             var heel=palmContact-rotation*Vector3.forward*.035f;
             var site=new Site { group=group,hand=hand,label=labels[group],part=part,
                 localHand=new Pose(part.body.transform.InverseTransformPoint(heel),Quaternion.Inverse(part.body.rotation)*rotation),
@@ -142,14 +142,14 @@ namespace FirstAidVR.Rcp
             {
                 bool attached=i==heldLeft || i==heldRight;
                 bool show=attached || sites[i].group==ActiveGroup;
-                // When holding different zones, show only the two actually held hands.
+                // Al sujetar zonas diferentes, mostrar solo las dos manos realmente ocupadas.
                 if(heldLeft>=0 && heldRight>=0 && sites[heldLeft].group!=sites[heldRight].group) show=attached;
                 ghosts[i].gameObject.SetActive(show);
                 if(!show) continue;
                 VisibleHands++;
                 int meshHand=attached?sites[i].heldHand:sites[i].hand;
                 if(!attached && held) meshHand=heldLeft>=0?1:0;
-                // The slot is available to either hand; its mesh follows the hand that captured it.
+                // La posición está disponible para cualquiera de las manos; su malla sigue a la mano que la ocupó.
                 ghosts[i].GetComponent<MeshFilter>().sharedMesh=meshHand==0?settings.gripLeftHand:settings.gripRightHand;
                 var pose=HandPose(i); ghosts[i].SetPositionAndRotation(pose.position,pose.rotation);
                 var color=attached?CprTutorialView.Green:CprTutorialView.Cyan;

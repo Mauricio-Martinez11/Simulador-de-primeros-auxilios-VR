@@ -52,8 +52,8 @@ namespace FirstAidVR.Rcp
             if (settings == null || patient == null || settings.leftHand == null || settings.rightHand == null || settings.hologramMaterial == null)
             { Debug.LogError("RCP: faltan paciente o recursos en Resources/RCP/TrainingSettings.",this); enabled=false; yield break; }
             input = gameObject.AddComponent<CprTrackedHands>(); input.Discover();
-            // OpenXR can start its session after Start(). The rig must exist before the first tracked frame.
-            // XRSettings.isDeviceActive at this point used to incorrectly select the static desktop camera.
+            // OpenXR puede iniciar su sesión después de Start(). El rig debe existir antes del primer fotograma con seguimiento.
+            // XRSettings.isDeviceActive en este punto solía seleccionar incorrectamente la cámara estática de escritorio.
             if (!desktopPreview && input.Rig == null && xrCorePrefab != null)
             { Instantiate(xrCorePrefab); yield return null; input.Discover(); }
             yield return null;
@@ -114,7 +114,7 @@ namespace FirstAidVR.Rcp
             var floorSide=Vector3.ProjectOnPlane(patient.right,Vector3.up);
             if(floorSide.sqrMagnitude>.01f) side=floorSide.normalized;
             var orientation=Quaternion.LookRotation(-side,Vector3.up);
-            // Offset is in floor/world axes, with X/Z following the patient's longitudinal direction.
+            // El desplazamiento usa los ejes del suelo y del mundo; X/Z siguen la dirección longitudinal del paciente.
             var forward=Vector3.ProjectOnPlane(patient.up,Vector3.up).normalized;
             var offset = side*settings.chestOffset.x + Vector3.up*settings.chestOffset.y - forward*settings.chestOffset.z;
             chest=chestAnchor!=null ? new Pose(chestAnchor.position,chestAnchor.rotation) : new Pose(chestBone.position+offset,orientation);
@@ -136,12 +136,12 @@ namespace FirstAidVR.Rcp
                 1-Mathf.Exp(-5*Time.unscaledDeltaTime));
             var gaze=new Ray(cameraForView.transform.position,cameraForView.transform.forward);
 #if UNITY_EDITOR
-            // Mouse points the observation ray in the desktop preview; it never synthesizes tracked hands.
+            // El mouse dirige el rayo de observación en la vista previa de escritorio; nunca simula manos con seguimiento.
             if (input.Rig == null && Input.mousePresent) gaze=cameraForView.ScreenPointToRay(Input.mousePosition);
 #endif
             bool looking=Vector3.Angle(gaze.direction,chest.position-gaze.origin)<22 && Vector3.Distance(gaze.origin,chest.position)<2.5f;
             var before=flow.Step;
-            // The standalone simulator owns keyboard focus while Unity renders in the background.
+            // El simulador independiente mantiene el foco del teclado mientras Unity renderiza en segundo plano.
             if (hasInputFocus) flow.Tick(Time.unscaledDeltaTime,left,right,shoulder,chest,upper,looking);
             if (before!=flow.Step)
             {
@@ -187,7 +187,7 @@ namespace FirstAidVR.Rcp
             Pose l=touch?shoulder:upper;
             Pose r=chest;
             if (stacking && left.controller) l.position += chest.rotation * Vector3.up * settings.controllerStackExtra;
-            // Retain a clearly visible target when no tracked hand is available.
+            // Mantener un objetivo claramente visible cuando no haya una mano con seguimiento disponible.
             view.Hand(0,l,left,showLeft,flow.StackLatched || (flow.LeftAligned && left.valid),settings.upperHandCaptureRadius,stacking);
             view.Hand(1,r,right,showRight,flow.LowerLatched || (flow.RightAligned && right.valid),settings.captureRadius,stacking);
             view.Marker(touch?shoulder:chest,touch||placement||flow.Step==CprStep.Breathing,flow.LeftAligned||flow.RightAligned);

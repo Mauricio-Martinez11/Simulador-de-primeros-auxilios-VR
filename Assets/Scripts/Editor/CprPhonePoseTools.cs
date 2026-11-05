@@ -32,8 +32,8 @@ public static class CprPhonePoseTools
             var inverse=Quaternion.Inverse(basis);
             var heel=Vector3.Lerp(wrist.position,middle.position,.22f);
             float scale=.0956f/Vector3.Distance(wrist.position,middle.position);
-            // Same measured heel frame as CprTrackedHands, with the skin above its
-            // palm surface. This is a visual grip only; it never replaces input.
+            // El mismo sistema de referencia medido del talón de la mano que en CprTrackedHands, con la piel
+            // sobre la superficie de la palma. Este agarre es solo visual; nunca reemplaza la entrada.
             Vector3 Local(Vector3 world)=>inverse*(world-heel)*scale+Vector3.up*.012f;
             Vector3 World(Vector3 local)=>heel+basis*(local-Vector3.up*.012f)/scale;
             float sign=left?-1:1;
@@ -43,8 +43,8 @@ public static class CprPhonePoseTools
             {
                 var chain=new[]{"Proximal","Intermediate","Distal"}.Select(s=>bones.First(t=>t.name=="XRHand_"+names[i]+s)).ToArray();
                 var tip=bones.First(t=>t.name=="XRHand_"+names[i]+"Tip");
-                // Start the bend around the outer edge instead of curling into
-                // the middle of the screen like a fist.
+                // Iniciar la curvatura alrededor del borde exterior en lugar de cerrar los dedos
+                // hacia el centro de la pantalla como un puño.
                 var aim=World(new Vector3(sign*.048f,.001f,heights[i]));
                 chain[0].rotation=Quaternion.FromToRotation(chain[1].position-chain[0].position,aim-chain[0].position)*chain[0].rotation;
                 var flex=basis*Vector3.right;

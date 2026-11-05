@@ -1,7 +1,7 @@
 ﻿param([string]$Project = (Split-Path $PSScriptRoot -Parent), [string]$Key="")
 $ErrorActionPreference='Stop'
 if ($PSVersionTable.PSEdition -eq 'Core') { & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $PSCommandPath -Project $Project -Key $Key; if($LASTEXITCODE -ne 0) { throw "Error al generar audio sincronizado" }; return }
-# Native Sabina output rate keeps SpeakProgress.AudioPosition aligned with WAV time.
+# La frecuencia de salida nativa de Sabina mantiene SpeakProgress.AudioPosition sincronizado con el tiempo del WAV.
 Add-Type -AssemblyName System.Speech
 Add-Type -ReferencedAssemblies System.Speech -TypeDefinition @"
 using System;
@@ -28,7 +28,7 @@ try {
   $speech.SetOutputToWaveFile((Join-Path $folder ($entry.key+'.wav')),$format)
   $spoken=$entry.text.Replace('mixta','míksta')
   $speech.Speak($spoken); $speech.SetOutputToNull()
-  # Map phonetic spelling back to the unchanged on-screen Spanish dialogue.
+  # Relacionar la escritura fonética con el diálogo en español que se muestra sin cambios en pantalla.
   $changes=[regex]::Matches($spoken,'míksta')
   foreach($word in $timing.words) {
    $offset=0

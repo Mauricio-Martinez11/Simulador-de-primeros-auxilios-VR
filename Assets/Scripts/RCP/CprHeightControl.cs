@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 namespace FirstAidVR.Rcp
 {
-    // Keep the panel still during a drag; apply the height on release so it cannot chase the ray.
+    // Mantener quieto el panel durante el arrastre; aplicar la altura al soltar para que no siga al rayo.
     public sealed class CprHeightControl : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ICancelHandler
     {
         public bool Dragging { get; private set; }

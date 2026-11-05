@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace FirstAidVR.Rcp
 {
-    // Enabled only by the main-menu familiarization, never by the evaluated station.
+    // Se habilita solo durante la familiarización del menú principal, nunca en la estación evaluada.
     public sealed class CprIntroCompanion : MonoBehaviour
     {
         [Serializable] public class Word { public float time; public int start,length; }
@@ -61,7 +61,7 @@ namespace FirstAidVR.Rcp
                 var ray=canvas.worldCamera.ScreenPointToRay(Input.mousePosition);
                 foreach(var button in GetComponentsInChildren<Button>())
                 {
-                    // Buttons are children of the canvas, not this component's transform hierarchy root.
+                    // Los botones son hijos del canvas, no de la raíz de la jerarquía de transformaciones de este componente.
                     var rect=(RectTransform)button.transform;
                     if(button.interactable && button.gameObject.activeInHierarchy && new Plane(rect.forward,rect.position).Raycast(ray,out float d)
                         && rect.rect.Contains(rect.InverseTransformPoint(ray.GetPoint(d)))) button.onClick.Invoke();

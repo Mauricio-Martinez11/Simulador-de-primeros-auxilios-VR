@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Video;
 
-// Import the reviewed illustrated sequences assembled by Tools/GenerateCprLessons.py.
+// Importar las secuencias ilustradas revisadas que prepara Tools/GenerateCprLessons.py.
 public static class CprLessonVideoTools
 {
     public static readonly string[] Names={"01_Seguridad","02_Respuesta","03_Respiracion","04_Ayuda","05_Manos","06_Compresiones"};
